@@ -49,7 +49,7 @@ def registration():
         db.session.commit()
         return render_template('index.html')
 
-        # return f"first_name:{first_name}; last_name:{last_name}; age:{age}; e_mail:{e_mail}; password:{password}"
+        print( f"first_name:{first_name}; last_name:{last_name}; age:{age}; e_mail:{e_mail}; password:{password}")
 
     return render_template('registration.html')
 

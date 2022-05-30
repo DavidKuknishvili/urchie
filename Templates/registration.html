@@ -42,7 +42,7 @@
               <label for="again_password">პაროლი</label>
               <input class="form-group_input" type="password" name="password" id="again_password" placeholder="გაიმეორე პაროლი">
             </div>
-            <button class="registration_next"type="button" data-next>შემდეგი</button>
+            <button class="registration_next" type="button" data-next>შემდეგი</button>
           </div>
   
           <div class="registartion_card" data-step>
@@ -106,6 +106,32 @@
 
 
 <script>
+    document.querySelector(["data-next"]).disabled = true;
+
+    const password = document.getElementById('password')
+    const again_password = document.getElementById('again_password')
+    const email = document.getElementById('email')
+    const firstname = document.getElementById('firstName')
+    const lastname = document.getElementById('lastName')
+    const age = document.getElementById('age')
+    const file = document.getElementById('file-input')
+
+    if(email == null || firstname== null||lastname==null||age==null||file==null ){
+        firstname.style.borderColor = "red"
+        lastname.style.borderColor = "red"
+        age.style.borderColor = "red"
+        file.style.borderColor = "red"
+    }
+    else if (password != again_password || password <= 8){
+        document.getElementById('password').style.borderColor = "red";
+        document.getElementById('again_password').borderColor = "red";
+    }
+    else{
+        document.querySelector(["data-next"]).disabled = false;
+
+    }
+
+
 
 
 
