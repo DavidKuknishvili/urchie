@@ -13,7 +13,7 @@
 <body>
     
     <section class="login_left_side" >
-      <a href="first.html">
+      <a href="/">
         <svg class="logo" width="97" height="48" viewBox="0 0 97 48" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M42 38C42 39.1 41.6087 40.042 40.826 40.826C40.042 41.6087 39.1 42 38 42L10 42C8.9 42 7.958 41.6087 7.174 40.826C6.39133 40.042 6 39.1 6 38L6 30C6 28.9 6.39133 27.958 7.174 27.174C7.958 26.3913 8.9 26 10 26L38 26C39.1 26 40.042 26.3913 40.826 27.174C41.6087 27.958 42 28.9 42 30L42 38ZM20 18C20 19.1 19.608 20.0413 18.824 20.824C18.0413 21.608 17.1 22 16 22L10 22C8.9 22 7.958 21.608 7.174 20.824C6.39133 20.0413 6 19.1 6 18L6 10C6 8.9 6.39133 7.958 7.174 7.174C7.958 6.39133 8.9 6 10 6L16 6C17.1 6 18.0413 6.39133 18.824 7.174C19.608 7.958 20 8.9 20 10L20 18ZM42 18C42 19.1 41.6087 20.0413 40.826 20.824C40.042 21.608 39.1 22 38 22L28 22C26.9 22 25.958 21.608 25.174 20.824C24.3913 20.0413 24 19.1 24 18L24 10C24 8.9 24.3913 7.958 25.174 7.174C25.958 6.39133 26.9 6 28 6L38 6C39.1 6 40.042 6.39133 40.826 7.174C41.6087 7.958 42 8.9 42 10L42 18Z" fill="#1D1D1D"/>
           <rect x="12" y="21" width="2" height="7" fill="#1D1D1D"/>
@@ -24,26 +24,25 @@
         <h1 class="registracion_title" >
               ავოტიზაცია
         </h1>
-        <form class="login_form">
+        <form method="post" class="login_form">
             <div class="login_div">
               <label for="email" class="login_email">ელ-ფოსტა</label>
               <br>
               <div class="col-sm-10">
-                <input type="email"  class="flogin_email_inp" id="email" placeholder="შეიყვანე ელ-ფოსტა">
+                <input type="email" name="email_login"  class="flogin_email_inp" id="email" placeholder="შეიყვანე ელ-ფოსტა">
               </div>
             </div>
             <div class="login_div">
               <label for="inputPassword" class="login_password">პაროლი</label>
               <div class="col-sm-10">
-                <input type="password" class="login_password_inp" id="inputPassword" placeholder="შეიყვანე პაროლი">
+                <input type="password" name="password_login" class="login_password_inp" id="inputPassword" placeholder="შეიყვანე პაროლი">
               </div>
             </div>
 
             <a class="login_forget_password" href="">დაგავიწყდა პაროლი</a>
-            <a href="index.html">
-              <button class="login_button" type="button" > შესვლა </button>
 
-            </a>
+              <button class="login_button" type="submit" > შესვლა </button>
+
 
             <div class="login_question">
                 <p class="login_signup_question"> არ გაქვს ანგარიში?</p>

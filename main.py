@@ -1,7 +1,6 @@
 from flask import Flask, redirect, url_for, render_template, request, session
 from flask_sqlalchemy import SQLAlchemy
 
-
 app = Flask(__name__)
 
 app.config['SECRET_KEY'] = 'URCHIE_KEY'
@@ -11,7 +10,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATION'] = False
 db = SQLAlchemy(app)
 
 
-class users(db.Model):
+class Users(db.Model):
     first_name = db.Column(db.String, primary_key=True, nullable=False)
     last_name = db.Column(db.String, nullable=False)
     age = db.Column(db.Integer, nullable=False)
@@ -20,16 +19,47 @@ class users(db.Model):
     user_image = db.Column(db.LargeBinary, nullable=False)
 
     def __str__(self):
-        return f"first_name:{self.first_name}; last_name:{self.last_name}; age:{self.age}; e_mail:{self.e_mail}; password:{self.password};"
+        return f"{self.first_name},{self.last_name},{self.age},{self.e_mail},{self.password}"
+        # return (self.first_name, self.last_name, self.e_mail, self.age, self.password)
+
+
+all_users = Users.query.all()
+listof = []
+
+for each in all_users:
+    listof.append(tuple(str(each).split(',')))
+
+print(listof)
 
 
 @app.route('/')
 def home():
-    return render_template('index.html')
+
+    if 'user' in session:
+        return render_template('index.html')
+    else:
+        return render_template('first.html')
+
+    #
+    # return render_template('index.html')
 
 
-@app.route('/login')
+@app.route('/login', methods=['GET', 'POST'])
 def login():
+    if request.method == 'POST':
+        e_mail = request.form['email_login']
+        password = request.form['password_login']
+
+        # print(e_mail, password)
+
+        for each in listof:
+            if e_mail == each[3] and password == each[4]:
+                session['user'] = e_mail
+                return render_template('index.html')
+                # return "hello"
+            else:
+                return render_template('login.html')
+                # return "world"
     return render_template('login.html')
 
 
@@ -43,13 +73,13 @@ def registration():
         password = request.form['password']
         user_image = request.files['image']
 
-        user = users(first_name=first_name, last_name=last_name, age=age, e_mail=e_mail, password=password,
+        user = Users(first_name=first_name, last_name=last_name, age=age, e_mail=e_mail, password=password,
                      user_image=user_image.read())
         db.session.add(user)
         db.session.commit()
         return render_template('index.html')
 
-        print( f"first_name:{first_name}; last_name:{last_name}; age:{age}; e_mail:{e_mail}; password:{password}")
+        print(f"first_name:{first_name}; last_name:{last_name}; age:{age}; e_mail:{e_mail}; password:{password}")
 
     return render_template('registration.html')
 
@@ -58,10 +88,17 @@ def registration():
 def open():
     return render_template('open.html')
 
+@app.route('/logout')
+def logout():
 
-@app.route('/first')
-def first():
-    return render_template('first.html')
+    session.pop('user', None)
+    return redirect(url_for('home'))
+
+
+
+# @app.route('/first')
+# def first():
+#     return render_template('first.html')
 
 
 @app.route('/add')
