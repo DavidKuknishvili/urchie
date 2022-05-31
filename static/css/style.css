@@ -80,7 +80,7 @@ body{
     max-width: 600px;
     align-items: center;
     display: flex;
-    padding: 10px, 20px;
+    padding: 10px 20px;
     padding-left: 7px;
     text-align: center;
 
@@ -725,7 +725,7 @@ iframe{
 .file_label{
     display: block;
     position: relative;
-    background-color: #0079cf;
+    background-color: #0094FF;
     color: #ffffff;
     font-size: 18px;
     text-align: center;
@@ -1071,11 +1071,20 @@ input[type="color"]::-moz-color-swatch {
 
 .add_description_container{
     width: 95%;
-    padding: 50px 30px;
+    padding: 43px 30px 0px 30px;
     height: fit-content;
     border-radius: 25px;
     font-family: "BPG Nino Mtavruli", sans-serif;
     
+}
+
+.add_description_container{
+    width: 95%;
+    padding: 43px 30px 0px 30px;
+    height: fit-content;
+    border-radius: 25px;
+    font-family: "BPG Nino Mtavruli", sans-serif;
+
 }
 .add_category{
     margin-left: 30px;
@@ -1093,4 +1102,37 @@ input[type="color"]::-moz-color-swatch {
 .add_text_input{
     height: 150px;
 
+}
+
+
+.add_file_container{
+    width: 60%;
+    min-width: 450px;
+    position: relative;
+    margin: 10px auto;
+    padding: 5px 20px;
+    border-radius: 7px;
+}
+#add-text-input{
+    overflow-y: scroll;
+    box-sizing: content-box;
+
+}
+
+.add_topc_button{
+    margin-left: auto;
+    width: 200px;
+    height: 55px;
+    font-size: 19px;
+    background-color: #0094FF;
+    color: #fff;
+    border-radius: 16px;
+    font-family: "BPG Nino Mtavruli", sans-serif;
+
+}
+.add_button{
+    padding-right: 35px;
+}
+.add_images{
+    display: none;
 }

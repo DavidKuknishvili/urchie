@@ -23,14 +23,6 @@ class Users(db.Model):
         # return (self.first_name, self.last_name, self.e_mail, self.age, self.password)
 
 
-all_users = Users.query.all()
-listof = []
-
-for each in all_users:
-    listof.append(tuple(str(each).split(',')))
-
-print(listof)
-
 
 @app.route('/')
 def home():
@@ -40,26 +32,29 @@ def home():
     else:
         return render_template('first.html')
 
-    #
-    # return render_template('index.html')
+
 
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    if request.method == 'POST':
-        e_mail = request.form['email_login']
-        password = request.form['password_login']
+    if 'user' in session:
+        return render_template('index.html')
+    else:
 
-        # print(e_mail, password)
+        if request.method == 'POST':
+            e_mail = request.form['email_login']
+            password = request.form['password_login']
+            users = Users.query.filter_by(e_mail= e_mail).all()
 
-        for each in listof:
-            if e_mail == each[3] and password == each[4]:
-                session['user'] = e_mail
-                return render_template('index.html')
-                # return "hello"
-            else:
-                return render_template('login.html')
-                # return "world"
+
+            for each in users:
+                if e_mail == str(each).split(',')[3] and password == str(each).split(',')[4]:
+                    session['user'] = e_mail
+                    return redirect(url_for('home'))
+                else:
+                    return render_template('login.html')
+
+
     return render_template('login.html')
 
 
@@ -77,7 +72,9 @@ def registration():
                      user_image=user_image.read())
         db.session.add(user)
         db.session.commit()
-        return render_template('index.html')
+
+        session['user'] = e_mail
+        return redirect(url_for('home'))
 
         print(f"first_name:{first_name}; last_name:{last_name}; age:{age}; e_mail:{e_mail}; password:{password}")
 
