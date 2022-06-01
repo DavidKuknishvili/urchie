@@ -1,3 +1,4 @@
+
 {% extends 'base.html' %}
     {% block title %} მთავარი {% endblock %}
 
@@ -24,8 +25,7 @@
     <section class="main_content">
 
 
-
-        <form method="post" class="main-carousel">
+    <form method="post" class="main-carousel">
             <div class="cell">
                 <button  class="checkbox-tools" type="radio"   name="category" id="tool-1" value="ზოგადი" checked ></button>
                 <label class="for-checkbox-tools" type="submit" for="tool-1">
@@ -95,10 +95,10 @@
 
 
 
-          
+
         <div class="category">
             <div class="col-12 pb-5">
-                
+
 
             </div>
 
@@ -107,69 +107,32 @@
         </div>
 
 
-        <a href="open">
-            <div class="first_topic">
-
-                <img class="first_topic_image" src="https://www.travelweekly.com.au/wp-content/uploads/2017/03/iStock-512277914.jpg" alt="">
-    
-                <p class="first_topic_title">სათაური უნდა იყოს აქ ცოტა დიდი სათაური რომ გამოჩნდეს მაგიტომ ვწერ აქ რარაცეებს:) </p>
-
-                <div class="first_topic_time_category_div">
-
-                    <h1 class="first_topic_category" >
-                        კატეგორია
-                    </h1>
-                    <br>
-                    <br>
-                    <br>
-                    <br>
-                    <br>
-                    <br>
-                    <br>
-                    <br>
-                    <br>
-                    <br>
-                    <br>
-                    <h1 class="first_topic_time" >
-                        1 წუთის წინ
-                    </h1>
-                </div>
-
-
-            </div>
-    
-        </a>
+        {%for each in info %}
         <a class="topic_a" href="open" >
             <div class="topic">
 
                 <img class="topic_image" src="https://www.travelweekly.com.au/wp-content/uploads/2017/03/iStock-512277914.jpg" alt="" >
 
                 <img class="topic_user_img" src="https://th.bing.com/th/id/R.8de7a26459f8b095690ff8a18e0c49b7?rik=hfPNQ8WbqLviFg&pid=ImgRaw&r=0" alt="">
-
-
                 <div>
-                    <h1 class="topic_title" >სათაური უნდა იყოს აქ ცოტა დიდი სათაური რომ გამოჩნდეს მაგიტომ ვწერ აქ რარაცეებს:)</h1>
+                    <h1 class="topic_title" >{{each[0]}}</h1>
                 </div>
-
-
-
 
                 <div class="topic_time_category_div">
                     <h1 class="profile-topic_category" >
-                        კატეგორია
+                        {{each[2]}}
                     </h1>
                     <br>
                     <h1 class="profile-topic_time" >
-                        1 წუთის წინ
+                        {{each[1]}} წინ
                     </h1>
 
                 </div>
 
-
-
             </div>
-
         </a>
+        {% endfor %}
+
     </section>
 
     {% endblock %}

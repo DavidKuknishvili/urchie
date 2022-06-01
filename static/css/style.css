@@ -1206,11 +1206,11 @@ input[type="color"]::-moz-color-swatch {
 
 .profile-topic_time{
     color: #1D1D1D;
-
+    font-weight: bold;
     outline: none;
     display: block;
     display: block;
-    margin-left: 25%;
+
     font-family: "BPG Nino Mtavruli", sans-serif;
 
 }

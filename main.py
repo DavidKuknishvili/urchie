@@ -40,10 +40,94 @@ class Posts(db.Model):
         return f"{self.author},{self.title},{self.description},{self.category},{self.upload_date},{self.post_image}"
 
 
-@app.route('/')
+@app.route('/', methods=['GET', 'POST'])
 def home():
+
     if 'user' in session:
+        if request.method == 'POST':
+            category = request.form['category']
+            post_info = Posts.query.filter_by(category=category).all()
+
+            if category == 'გართობა':
+                post_list = []
+                for each in post_info:
+
+                    title = str(each).split(',')[1]
+                    date = str(each).split(',')[4]
+                    print(title)
+                    print(date)
+
+
+                    post_date_min = datetime.now().minute - datetime.strptime(date, '%Y-%m-%d %H:%M:%S.%f').minute
+
+                    post_date_hour = datetime.now().hour - datetime.strptime(date, '%Y-%m-%d %H:%M:%S.%f').hour
+
+                    post_date_day = datetime.now().day - datetime.strptime(date, '%Y-%m-%d %H:%M:%S.%f').day
+
+                    post_date_month = datetime.now().month - datetime.strptime(date, '%Y-%m-%d %H:%M:%S.%f').month
+
+                    post_date_year = datetime.now().year - datetime.strptime(date, '%Y-%m-%d %H:%M:%S.%f').year
+
+                    post_date = str(datetime.now().year - datetime.strptime(date, '%Y-%m-%d %H:%M:%S.%f').year)+'წლის'
+
+
+                    if post_date_min !=0 and post_date_hour == 0:
+                        post_date = str(datetime.now().minute - datetime.strptime(date, '%Y-%m-%d %H:%M:%S.%f').minute) + ' წუთის'
+
+                    elif post_date_hour != 0 and post_date_day == 0:
+                        post_date = str(datetime.now().hour - datetime.strptime(date, '%Y-%m-%d %H:%M:%S.%f').hour)+' საათის'
+
+                    elif post_date_day != 0 and post_date_month == 0:
+                        post_date = str(datetime.now().day - datetime.strptime(date, '%Y-%m-%d %H:%M:%S.%f').day)+' დღის'
+
+                    elif post_date_month != 0 and post_date_year == 0:
+                        post_date = str(datetime.now().month - datetime.strptime(date, '%Y-%m-%d %H:%M:%S.%f').month)+' თვის'
+
+                    else: post_date = str(datetime.now().year - datetime.strptime(date, '%Y-%m-%d %H:%M:%S.%f').year)+' წელის'
+
+
+
+
+
+
+                    # post_date = f'{post_date_min} {post_date_hour} {post_date_day}, {post_date_month}, {post_date_year} '
+                    info = (title, post_date, category)
+                    post_list.append(info)
+                print(post_list)
+
+
+                #
+                # user_mail = str(session['user'])
+                # con = sqlite3.connect('urchie.sqlite3')
+                # cursor = con.cursor()
+                # cursor.execute(f"SELECT user_image FROM users where e_mail='{user_mail}'")
+                # result = cursor.fetchone()
+                # image_bytes = result[0]
+                # bytes_io = BytesIO(image_bytes)
+
+                return render_template('category.html', info = post_list )
+            elif category == 'პროგრამირება':
+                return render_template('category.html')
+            elif category == 'მუსიკა':
+                return render_template('category.html')
+            elif category == 'ურთიერთობები':
+                return render_template('category.html')
+            elif category == 'კულინარია':
+                return render_template('category.html')
+            elif category == 'სპორტი':
+                return render_template('category.html')
+            elif category == 'ხელოვნება':
+                return render_template('category.html')
+            elif category == 'მეცნიერება':
+                return render_template('category.html')
+            elif category == 'პოლიტიკა':
+                return render_template('category.html')
+
+            elif category == 'ზოგადი':
+                return render_template('index.html')
+
         return render_template('index.html')
+
     else:
         return render_template('first.html')
 
@@ -162,10 +246,11 @@ def add():
         return redirect(url_for('home'))
 
 
-
-@app.route("/category=<CATEGORY>")
-def category(CATEGORY):
-
+# #
+# @app.route("/category=<CATEGORY>")
+# def category(CATEGORY):
+#
+#     return render_template('category.html')
 
 
 
