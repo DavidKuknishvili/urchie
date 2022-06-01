@@ -39,14 +39,14 @@
                 <div class="form-group">
                     <label for="password">პაროლი</label>
                     <input class="form-group_input" type="password" name="password" id="password"
-                           placeholder="შეიყვანე პაროლი">
+                           placeholder="შეიყვანე პაროლი" >
                 </div>
                 <div class="form-group">
                     <label for="again_password">პაროლი</label>
-                    <input class="form-group_input" type="password" name="password" id="again_password"
-                           placeholder="გაიმეორე პაროლი">
+                    <input class="form-group_input" type="password" name="again_password" id="again_password"
+                           placeholder="გაიმეორე პაროლი" >
                 </div>
-                <button class="registration_next" type="button" data-next>შემდეგი</button>
+                <button class="registration_next" type="button" id="next" data-next>შემდეგი</button>
             </div>
 
             <div class="registartion_card" data-step>
@@ -115,29 +115,34 @@
 
 <script>
     // var next = document.querySelector(["data-next"])
-    //
-    // var password = document.getElementById('password')
-    // var again_password = document.getElementById('again_password')
-    // var email = document.getElementById('email')
-    // var firstname = document.getElementById('firstName')
-    // var lastname = document.getElementById('lastName')
-    // var age = document.getElementById('age')
-    // var file = document.getElementById('file-input')
-    //
-    // next.addEventListener('click', function () {
-    //     if (email == null || firstname == null || lastname == null || age == null || file == null) {
-    //         firstname.style.borderColor = "red"
-    //         lastname.style.borderColor = "red"
-    //         age.style.borderColor = "red"
-    //         file.style.borderColor = "red"
-    //     } else if (password != again_password || password <= 8) {
-    //         document.getElementById('password').style.borderColor = "red";
-    //         document.getElementById('again_password').borderColor = "red";
-    //     } else {
-    //         // document.querySelector(["data-next"]).disabled = false;
-    //
-    //     }
-    // })
+// const next = document.getElementById("next")
+//     var password = document.getElementById('password')
+//     var again_password = document.getElementById('again_password')
+//     var email = document.getElementById('email')
+//     var firstname = document.getElementById('firstName')
+//     var lastname = document.getElementById('lastName')
+//     var age = document.getElementById('age')
+//     var file = document.getElementById('file-input')
+//
+//     document.getElementById("next").disabled = false;
+//
+//     next.addEventListener('click', function () {
+//         if (email == null ) {
+//
+//             firstname.style.borderColor = "red"
+//             document.getElementById("next").disabled = false;
+//
+//         } else if (password != again_password || password <= 8) {
+//             currentStep = 0
+//             showCurrentStep()
+//             document.getElementById('password').style.borderColor = "red";
+//             document.getElementById('again_password').borderColor = "red";
+//             document.getElementById("next").disabled = false;
+//         } else {
+//             // document.querySelector(["data-next"]).disabled = false;
+//
+//         }
+//     })
 
 
     let fileInput = document.getElementById("file-input");

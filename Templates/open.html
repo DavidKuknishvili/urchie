@@ -1,12 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>თემა</title>
-    
-    <link
+{%extends 'base.html'%}
+
+{% block title %} თემა {% endblock %}
+{% block style %}
+ <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
     />
@@ -19,10 +15,9 @@
     <link rel="stylesheet" href="{{url_for('static', filename='css/style.css')}}">
     <link rel="stylesheet" href="{{url_for('static', filename='css/reset.css')}}">
 
+{% endblock %}
 
-</head>
-<body>
-    
+{% block content%}
     <section class="main_content">
 
 
@@ -34,15 +29,27 @@
                 <img class="open_topic_image" src="https://www.travelweekly.com.au/wp-content/uploads/2017/03/iStock-512277914.jpg" alt="">
 
                 <p class="open_topic_title">სათაური უნდა იყოს აქ ცოტა დიდი სათაური რომ გამოჩნდეს მაგიტომ ვწერ აქ რარაცეებს:) </p>
-                
-                <p class="open_topic_time">
-                    1 წუთის წინ
-                </p>
-                <a href="/">
-                    <h1 class="open_topic_category" >
+
+
+                 <div class="first_topic_time_category_div">
+                    <h1 class="first_topic_category" >
                         კეტეგორია
                     </h1>
-                </a>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <h1 class="first_topic_time" >
+                        1 წუთის წინ
+                    </h1>
+                </div>
 
             </div>
             
@@ -96,6 +103,4 @@
 
 
     </section>
-
-</body>
-</html>
+{% endblock %}

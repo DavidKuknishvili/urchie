@@ -80,7 +80,6 @@ body{
     max-width: 600px;
     align-items: center;
     display: flex;
-    padding: 10px 20px;
     padding-left: 7px;
     text-align: center;
 
@@ -193,7 +192,17 @@ body{
     margin-left: 110px;
 
 }
+.topic_time_category_div{
+    margin-left: auto;
+    padding-right: 2%;
 
+}
+.first_topic_time_category_div{
+    position: absolute;
+    margin-left: auto;
+    right: 0;
+    padding-right: 11%;
+}
 .first_topic{
     width: 100%;
     height: 360px;
@@ -223,22 +232,28 @@ body{
     
 }
 .first_topic_time{
-    position: absolute;
-    color: #ffff;
-    right: 172px;
-    bottom: 240px;
+    color: #ffffff;
+
+    outline: none;
+    display: block;
+    display: block;
+    margin-left: 25%;
     font-family: "BPG Nino Mtavruli", sans-serif;
 
 }
 .first_topic_category{
-    position: absolute;
+
+
     color: #1D1D1D;
-    right: 172px;
-    bottom: 470px;
-    font-family: "BPG Nino Mtavruli", sans-serif;
+    display: block;
+    outline: none;
+    display: block;
+
     padding: 10px 20px 10px 20px;
-    background-color: white;
+    font-family: "BPG Nino Mtavruli", sans-serif;
+    background-color: #ffffff;
     border-radius: 18px;
+    margin-bottom: 25%;
 }
 
 .topic_a{
@@ -278,11 +293,11 @@ body{
 }
 .topic_time{
     color: #1D1D1D;
-    right: 172px;
+
     outline: none;
     display: block;
-    position: absolute;
-    bottom: 35px;
+    display: block;
+    margin-left: 25%;
     font-family: "BPG Nino Mtavruli", sans-serif;
 
 }
@@ -306,8 +321,8 @@ body{
     position: absolute;
     border-radius: 50px;
     border: 5px solid #fff;
-    left: 13%;
-    bottom: 3%;
+    margin-left: 6%;
+    margin-top: 2%;
     object-position: center;
     object-fit: cover;
 }
@@ -891,7 +906,7 @@ figcaption{
     position: absolute;
     color: #ffff;
     right: 190px;
-    bottom: 439px;
+    bottom: 335px;
     font-family: "BPG Nino Mtavruli", sans-serif;
 
 }
@@ -904,7 +919,7 @@ figcaption{
     position: absolute;
     color: #1D1D1D;
     right: 172px;
-    bottom: 670px;
+    bottom: 565px;
     font-family: "BPG Nino Mtavruli", sans-serif;
     padding: 10px 20px 10px 20px;
     background-color: white;
@@ -1116,23 +1131,99 @@ input[type="color"]::-moz-color-swatch {
 #add-text-input{
     overflow-y: scroll;
     box-sizing: content-box;
+    border: 1px solid #dddddd;
+    border-radius: 20px;
+    padding: 10px;
+    outline-color: #0094FF;
+    height: fit-content;
+    font-family: "BPG Nino Mtavruli", sans-serif;
 
 }
 
-.add_topc_button{
+.add_topic_button{
     margin-left: auto;
     width: 200px;
     height: 55px;
     font-size: 19px;
     background-color: #0094FF;
     color: #fff;
+    cursor: pointer;
     border-radius: 16px;
     font-family: "BPG Nino Mtavruli", sans-serif;
 
+}
+
+.add_button{
+    padding-right: 35px;
 }
 .add_button{
     padding-right: 35px;
 }
 .add_images{
     display: none;
+}
+
+
+/*profile*/
+.profile_background{
+    background-color: #0079cf;
+    width: 100%;
+    height: 200px;
+    border-radius: 25px;
+}
+.profile_photo{
+    height: 200px;
+    width: 200px;
+    border-radius: 100%;
+    margin-top: 7%;
+    margin-left: 5%;
+    border: 8px solid #EFEFEF;
+}
+
+.profile_nam_surname{
+    font-family: "BPG Nino Mtavruli", sans-serif;
+    font-weight: bold;
+    margin-top: 25px;
+    font-size: 25px;
+    margin-left: 25%;
+
+}
+
+.profile_topic{
+    margin-top: 8%;
+    width: 100%;
+    height: 150px;
+    background-color: #ffffff;
+    border-radius: 40px;
+    align-items: center;
+    display: flex;
+}
+.profile_category_and_time{
+    margin-left: auto;
+    padding-right: 2%;
+}
+
+
+.profile-topic_time{
+    color: #1D1D1D;
+
+    outline: none;
+    display: block;
+    display: block;
+    margin-left: 25%;
+    font-family: "BPG Nino Mtavruli", sans-serif;
+
+}
+.profile-topic_category{
+    color: #ffffff;
+    display: block;
+    outline: none;
+    display: block;
+
+    padding: 10px 20px 10px 20px;
+    font-family: "BPG Nino Mtavruli", sans-serif;
+    background-color: #1D1D1D;
+    border-radius: 18px;
+    margin-bottom: 25%;
+
 }

@@ -38,7 +38,7 @@ def home():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if 'user' in session:
-        return render_template('index.html')
+        return redirect(url_for('home'))
     else:
 
         if request.method == 'POST':
@@ -76,7 +76,7 @@ def registration():
         session['user'] = e_mail
         return redirect(url_for('home'))
 
-        print(f"first_name:{first_name}; last_name:{last_name}; age:{age}; e_mail:{e_mail}; password:{password}")
+        # print(f"first_name:{first_name}; last_name:{last_name}; age:{age}; e_mail:{e_mail}; password:{password}")
 
     return render_template('registration.html')
 
@@ -93,14 +93,17 @@ def logout():
 
 
 
-# @app.route('/first')
-# def first():
-#     return render_template('first.html')
+@app.route('/profile')
+def profile():
+    return render_template('profile.html')
 
 
 @app.route('/add')
 def add():
-    return render_template('add.html')
+    if 'user' in session:
+        return render_template('add.html')
+    else:
+        return redirect(url_for('home'))
 
 
 # just a comment

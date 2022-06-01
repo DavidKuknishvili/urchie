@@ -1,27 +1,29 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>დამატება</title>
 
+    {% extends 'base.html' %}
+    {% block title%} დამატება {% endblock %}
+
+    {% block coloradd %} #0094FF {% endblock %}
+
+    {% block homeadd %} <div class="dot"></div> {% endblock %}
+
+
+    {% block style %}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" />
   <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet"/>
 
     <link rel="stylesheet" href="{{url_for('static', filename='css/style.css')}}">
     <link rel="stylesheet" href="{{url_for('static', filename='css/reset.css')}}">
+    {% endblock%}
 
-</head>
-<body>
+    {% block content %}
 
      <section class="add_main_content main_content">
       <div class="add_main_content_div">
         <div class="add_content">
           <br>
           <div class="add_button">
-            <button class="add_topc_button">დამატება</button>
+            <button class="add_topic_button">დამატება</button>
 
           </div>
           <div class="add_titile_div">
@@ -76,31 +78,30 @@
 
 
     </section>
+    {% endblock %}
+    {% block script %}
+    <script>
 
-    
-<script>
 
 
-  
 
-    let fileInput = document.getElementById("file-input");
-    let imageContainer = document.getElementById("add_images");
-    let numOfFiles = document.getElementById("num-of-files");
+        let fileInput = document.getElementById("file-input");
+        let imageContainer = document.getElementById("add_images");
+        let numOfFiles = document.getElementById("num-of-files");
 
-    function preview(){
-        imageContainer.innerHTML = "";
+        function preview(){
+            imageContainer.innerHTML = "";
 
-        for(i of fileInput.files){
-            let figCap = document.createElement("figcaption");
-            figCap.innerText = i.name;
+            for(i of fileInput.files){
+                let figCap = document.createElement("figcaption");
+                figCap.innerText = i.name;
 
-            numOfFiles.textContent = `${i.name}  Photo Selected`;
+                numOfFiles.textContent = `${i.name}  Photo Selected`;
 
+            }
         }
-    }
 
 
 
-</script>
-</body>
-</html>
+    </script>
+    {% endblock %}
