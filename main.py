@@ -42,21 +42,31 @@ class Posts(db.Model):
 
 @app.route('/', methods=['GET', 'POST'])
 def home():
-
     if 'user' in session:
         if request.method == 'POST':
             category = request.form['category']
-            post_info = Posts.query.filter_by(category=category).all()
+            # post_info = Posts.query.filter_by(category=category).all()
+            #
+            # print(post_info)
+
+            con = sqlite3.connect('urchie.sqlite3')
+            cursor = con.cursor()
+
 
             if category == 'გართობა':
+                cursor.execute(f"SELECT title,upload_date,category FROM posts where category='{category}'")
+                post_info = cursor.fetchall()
+
+                # print(post_info)
+
                 post_list = []
+
                 for each in post_info:
 
-                    title = str(each).split(',')[1]
-                    date = str(each).split(',')[4]
-                    print(title)
-                    print(date)
-
+                    title = each[0]
+                    date = each[1]
+                    # print(title)
+                    # print(date)
 
                     post_date_min = datetime.now().minute - datetime.strptime(date, '%Y-%m-%d %H:%M:%S.%f').minute
 
@@ -68,33 +78,33 @@ def home():
 
                     post_date_year = datetime.now().year - datetime.strptime(date, '%Y-%m-%d %H:%M:%S.%f').year
 
-                    post_date = str(datetime.now().year - datetime.strptime(date, '%Y-%m-%d %H:%M:%S.%f').year)+'წლის'
+                    # post_date = str(datetime.now().year - datetime.strptime(date, '%Y-%m-%d %H:%M:%S.%f').year) + 'წლის'
 
 
-                    if post_date_min !=0 and post_date_hour == 0:
-                        post_date = str(datetime.now().minute - datetime.strptime(date, '%Y-%m-%d %H:%M:%S.%f').minute) + ' წუთის'
+                    if post_date_min != 0 and post_date_hour == 0:
+                        post_date = str(
+                            datetime.now().minute - datetime.strptime(date, '%Y-%m-%d %H:%M:%S.%f').minute) + ' წუთის'
 
                     elif post_date_hour != 0 and post_date_day == 0:
-                        post_date = str(datetime.now().hour - datetime.strptime(date, '%Y-%m-%d %H:%M:%S.%f').hour)+' საათის'
+                        post_date = str(
+                            datetime.now().hour - datetime.strptime(date, '%Y-%m-%d %H:%M:%S.%f').hour) + ' საათის'
 
                     elif post_date_day != 0 and post_date_month == 0:
-                        post_date = str(datetime.now().day - datetime.strptime(date, '%Y-%m-%d %H:%M:%S.%f').day)+' დღის'
+                        post_date = str(
+                            datetime.now().day - datetime.strptime(date, '%Y-%m-%d %H:%M:%S.%f').day) + ' დღის'
 
                     elif post_date_month != 0 and post_date_year == 0:
-                        post_date = str(datetime.now().month - datetime.strptime(date, '%Y-%m-%d %H:%M:%S.%f').month)+' თვის'
+                        post_date = str(
+                            datetime.now().month - datetime.strptime(date, '%Y-%m-%d %H:%M:%S.%f').month) + ' თვის'
 
-                    else: post_date = str(datetime.now().year - datetime.strptime(date, '%Y-%m-%d %H:%M:%S.%f').year)+' წელის'
-
-
-
-
-
+                    else:
+                        post_date = str(
+                            datetime.now().year - datetime.strptime(date, '%Y-%m-%d %H:%M:%S.%f').year) + ' წელის'
 
                     # post_date = f'{post_date_min} {post_date_hour} {post_date_day}, {post_date_month}, {post_date_year} '
                     info = (title, post_date, category)
                     post_list.append(info)
                 print(post_list)
-
 
                 #
                 # user_mail = str(session['user'])
@@ -105,7 +115,7 @@ def home():
                 # image_bytes = result[0]
                 # bytes_io = BytesIO(image_bytes)
 
-                return render_template('category.html', info = post_list )
+                return render_template('category.html', info=post_list)
             elif category == 'პროგრამირება':
                 return render_template('category.html')
             elif category == 'მუსიკა':
@@ -225,7 +235,6 @@ def set_image():
 def add():
     if 'user' in session:
         if request.method == 'POST':
-
             title = request.form['add_title']
             description = request.form['add_description']
             category = request.form['add_category']
@@ -251,7 +260,6 @@ def add():
 # def category(CATEGORY):
 #
 #     return render_template('category.html')
-
 
 
 if __name__ == '__main__':
