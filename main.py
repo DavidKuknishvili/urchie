@@ -1,4 +1,5 @@
 import sqlite3
+from datetime import datetime
 
 from flask import Flask, redirect, url_for, render_template, request, session
 from flask_sqlalchemy import SQLAlchemy
@@ -25,6 +26,18 @@ class Users(db.Model):
     def __str__(self):
         return f"{self.first_name},{self.last_name},{self.age},{self.e_mail},{self.password}"
         # return (self.first_name, self.last_name, self.e_mail, self.age, self.password)
+
+
+class Posts(db.Model):
+    author = db.Column(db.String, primary_key=True, nullable=False)
+    title = db.Column(db.String, nullable=False)
+    description = db.Column(db.String, nullable=False)
+    category = db.Column(db.String, nullable=False)
+    upload_date = db.Column(db.DateTime, nullable=False)
+    post_image = db.Column(db.LargeBinary, nullable=False)
+
+    def __str__(self):
+        return f"{self.author},{self.title},{self.description},{self.category},{self.upload_date},{self.post_image}"
 
 
 @app.route('/')
@@ -103,16 +116,14 @@ def profile():
 
         user_name = first_name + " " + last_name
 
-
         return render_template('profile.html', user_name=user_name)
 
     else:
-        return redirect(url_for('/'))
+        return redirect(url_for('home'))
 
 
-@app.route('/image')
+@app.route('/profile/image')
 def set_image():
-
     if 'user' in session:
         user_mail = str(session['user'])
         con = sqlite3.connect('urchie.sqlite3')
@@ -122,17 +133,40 @@ def set_image():
         image_bytes = result[0]
         bytes_io = BytesIO(image_bytes)
         return send_file(bytes_io, mimetype='image/jpeg')
-
-
-@app.route('/add')
-def add():
-    if 'user' in session:
-        return render_template('add.html')
     else:
         return redirect(url_for('home'))
 
 
-# just a comment
+@app.route('/add', methods=['GET', 'POST'])
+def add():
+    if 'user' in session:
+        if request.method == 'POST':
+
+            title = request.form['add_title']
+            description = request.form['add_description']
+            category = request.form['add_category']
+            post_image = request.files['add_image']
+            today_date = datetime.now()
+
+            author = str(session['user'])
+
+            post = Posts(author=author, title=title, description=description, category=category, upload_date=today_date,
+                         post_image=post_image.read())
+            db.session.add(post)
+            db.session.commit()
+
+            return redirect(url_for('home'))
+        return render_template('add.html')
+
+    else:
+        return redirect(url_for('home'))
+
+
+
+@app.route("/category=<CATEGORY>")
+def category(CATEGORY):
+
+
 
 
 if __name__ == '__main__':
