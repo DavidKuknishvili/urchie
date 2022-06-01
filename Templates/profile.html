@@ -1,0 +1,45 @@
+
+    {% extends 'base.html' %}
+    {% block title%} პროფილის გვერდი {% endblock %}
+    {% block style %}
+    <link rel="stylesheet" href="{{url_for('static', filename='css/style.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/reset.css')}}">
+    {% endblock%}
+
+    {% block profielcolor %} #0094FF {% endblock %}
+
+    {% block content %}
+
+    <section class="main_content">
+        <div class="profile_background">
+            <img src="https://writestylesonline.com/wp-content/uploads/2016/08/Follow-These-Steps-for-a-Flawless-Professional-Profile-Picture.jpg" alt="" class="profile_photo">
+
+        </div>
+            <h1 class="profile_nam_surname">დათო კუკნიშვილი</h1>
+        <a class="topic_a" href="open.html" >
+            <div class="profile_topic">
+
+                <img class="topic_image" src="https://www.travelweekly.com.au/wp-content/uploads/2017/03/iStock-512277914.jpg" alt="" >
+                <div>
+                    <h1 class="topic_title" >სათაური უნდა იყოს აქ ცოტა დიდი სათაური რომ გამოჩნდეს მაგიტომ ვწერ აქ რარაცეებს:)</h1>
+                </div>
+                <div class="profile_category_and_time">
+                    <h1 class="profile-topic_category" >
+                        კეტეგორია
+                    </h1>
+                    <br>
+                    <h1 class="profile-topic_time" >
+                        1 წუთის წინ
+                    </h1>
+
+
+                </div>
+
+
+            </div>
+
+        </a>
+
+
+    </section>
+    {% endblock%}
