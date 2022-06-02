@@ -23,7 +23,8 @@ db = SQLAlchemy(app)
 
 
 class Users(db.Model):
-    first_name = db.Column(db.String, primary_key=True, nullable=False)
+    id = db.Column(db.Integer, primary_key=True, nullable=False)
+    first_name = db.Column(db.String, nullable=False)
     last_name = db.Column(db.String, nullable=False)
     age = db.Column(db.Integer, nullable=False)
     e_mail = db.Column(db.String, nullable=False)
@@ -31,12 +32,13 @@ class Users(db.Model):
     user_image = db.Column(db.LargeBinary, nullable=False)
 
     def __str__(self):
-        return f"{self.first_name},{self.last_name},{self.age},{self.e_mail},{self.password}"
+        return f"{self.id},{self.first_name},{self.last_name},{self.age},{self.e_mail},{self.password}"
         # return (self.first_name, self.last_name, self.e_mail, self.age, self.password)
 
 
 class Posts(db.Model):
-    author = db.Column(db.String, primary_key=True, nullable=False)
+    id = db.Column(db.Integer, primary_key=True, nullable=False)
+    author = db.Column(db.String, nullable=False)
     title = db.Column(db.String, nullable=False)
     description = db.Column(db.String, nullable=False)
     category = db.Column(db.String, nullable=False)
@@ -44,7 +46,7 @@ class Posts(db.Model):
     post_image = db.Column(db.LargeBinary, nullable=False)
 
     def __str__(self):
-        return f"{self.author},{self.title},{self.description},{self.category},{self.upload_date},{self.post_image}"
+        return f"{self.id},{self.author},{self.title},{self.description},{self.category},{self.upload_date},{self.post_image}"
 
 
 
@@ -53,11 +55,11 @@ class Comments(db.Model):
     id = db.Column(db.Integer, primary_key=True, nullable=False)
     post_id = db.Column(db.Integer, nullable=False)
     comment = db.Column(db.String, nullable=False)
-    comment_author_email = db.Column(db.String, nullable=False)
+    comment_author_id = db.Column(db.Integer, nullable=False)
 
 
     def __str__(self):
-        return f"{self.post_id},{self.comment},{self.comment_author}"
+        return f"{self.post_id}%${self.comment}%${self.comment_author_id}"
 
 
 
@@ -242,7 +244,7 @@ def login():
             users = Users.query.filter_by(e_mail=e_mail).all()
 
             for each in users:
-                if e_mail == str(each).split(',')[3] and password == str(each).split(',')[4]:
+                if e_mail == str(each).split(',')[4] and password == str(each).split(',')[5]:
                     session['user'] = e_mail
                     return redirect(url_for('home'))
                 else:
@@ -277,23 +279,46 @@ def registration():
 @app.route('/open/<int:id>', methods=['GET', 'POST'])
 def open(id):
 
+    if 'user' in session:
+
+        post_obj = Posts.query.filter_by(id=id).all()
+        comment_obj = Comments.query.filter_by(post_id=id).all()
+        user_obj = Users.query.filter_by(e_mail=str(session['user'])).all()
+
+        comment_list = []
+
+        for each_post in post_obj:
+            post_title = str(each_post).split(',')[2]
+            post_description = str(each_post).split(',')[3]
+            post_category = str(each_post).split(',')[4]
+            post_upload_date = str(each_post).split(',')[5]
+
+        for each_user in user_obj:
+            user_id = str(each_user).split(',')[0]
+
+        if request.method == 'POST':
+            comment = request.form['comment']
+            print(comment)
+
+            Comments_obj = Comments(comment=comment, comment_author_id=user_id, post_id=id)
+            db.session.add(Comments_obj)
+            db.session.commit()
+
+        for each_comment in comment_obj:
+
+            comment = str(each_comment).split('%$')[1]
+            comment_author_id = str(each_comment).split('%$')[2]
+            comment_tuple = (comment, comment_author_id)
+            comment_list.append(comment_tuple)
 
 
-    if request.method == 'POST':
+        return render_template('open.html', title=post_title, description=post_description, time=post_upload_date, category=post_category, id=id, comments=comment_list)
 
 
-        comment = request.form['comment']
-
-        user_mail = str(session['user'])
-        print(comment)
+    return redirect(url_for('home'))
 
 
-        Comments_obj = Comments(comment=comment, comment_author_email=user_mail, post_id=id )
-        db.session.add(Comments_obj)
-        db.session.commit()
 
-
-    return render_template('open.html')
 
 
 @app.route('/logout')
@@ -310,8 +335,8 @@ def profile():
         user_info = Users.query.filter_by(e_mail=user_mail).all()
 
         for each in user_info:
-            first_name = str(each).split(',')[0]
-            last_name = str(each).split(',')[1]
+            first_name = str(each).split(',')[1]
+            last_name = str(each).split(',')[2]
 
         user_name = first_name + " " + last_name
 
@@ -321,13 +346,12 @@ def profile():
         return redirect(url_for('home'))
 
 
-@app.route('/profile/image')
-def set_image():
+@app.route('/profile/image/<id>')
+def set_image(id):
     if 'user' in session:
-        user_mail = str(session['user'])
         con = sqlite3.connect('urchie.sqlite3')
         cursor = con.cursor()
-        cursor.execute(f"SELECT user_image FROM users where e_mail='{user_mail}'")
+        cursor.execute(f"SELECT user_image FROM users where id={id}")
         result = cursor.fetchone()
         image_bytes = result[0]
         bytes_io = BytesIO(image_bytes)
