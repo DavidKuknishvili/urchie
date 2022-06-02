@@ -11,8 +11,10 @@ import sqlite3
 # result = cursor.fetchone()
 # image_bytes = result[0]
 
-today = datetime.datetime.now()
-print("Today's date:", today)
+# today = datetime.datetime.now()
+# print("Today's date:", today)
+#
+# print(today.hour.real)
 
-print(today.hour.real)
+print(len('ტესტსათ აურიასდფგჰჯკლქ წექწერტყუიოკჯ ჰგაზხცფგყჰუჯიკმნბგვფდეს წაზხც ფგტყჰუბგ ვფცდერტყუ ჰჯიყგტფრდხც ტესტსათ უყტრეწქასდფგჰჯკლ ვგჰჯი ჯუცრტყუიოპზხ  უყტრეწქასდფგჰჯკლ ვგჰჯი ჯუცრტყუიოპზხ  აურიასდფგჰჯკლქ წექწერტყუიოკჯ ჰგაზხცფგყჰუჯიკმნბგვფდეს წაზხც ფგტყჰუბგ ვფცდერტყუ ფდსაზხცვბნმკლპოი ცვბნმლკჯჰგფდს ააწერტყუიოპლკჯგ ფდსაზხცვბნმკ'))
 

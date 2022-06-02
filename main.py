@@ -1,10 +1,17 @@
+# db
+from flask_sqlalchemy import SQLAlchemy
 import sqlite3
+
+# date
 from datetime import datetime
 
+# flask
 from flask import Flask, redirect, url_for, render_template, request, session
-from flask_sqlalchemy import SQLAlchemy
+
+# image
 from io import BytesIO
 from flask import send_file
+
 
 app = Flask(__name__)
 
@@ -40,10 +47,25 @@ class Posts(db.Model):
         return f"{self.author},{self.title},{self.description},{self.category},{self.upload_date},{self.post_image}"
 
 
+
+
+class Comments(db.Model):
+    id = db.Column(db.Integer, primary_key=True, nullable=False)
+    post_id = db.Column(db.Integer, nullable=False)
+    comment = db.Column(db.String, nullable=False)
+    comment_author_email = db.Column(db.String, nullable=False)
+
+
+    def __str__(self):
+        return f"{self.post_id},{self.comment},{self.comment_author}"
+
+
+
+
 def set_post_data(category):
     con = sqlite3.connect('urchie.sqlite3')
     cursor = con.cursor()
-    cursor.execute(f"SELECT title,upload_date,category FROM posts where category='{category}'")
+    cursor.execute(f"SELECT id, title,upload_date,category FROM posts where category='{category}'")
     post_info = cursor.fetchall()
 
     # print(post_info)
@@ -51,13 +73,15 @@ def set_post_data(category):
     post_list = []
 
     for each in post_info:
+        post_id = each[0]
 
-        title = each[0]
-        # if len(title) > 1:
-        #     title = title[0] + '...'
-        date = each[1]
-        # print(title)
-        # print(date)
+        title = each[1]
+
+        if len(title) > 315:
+            title = title[:315] + '...'
+
+        date = each[2]
+
 
         post_date_min = datetime.now().minute - datetime.strptime(date, '%Y-%m-%d %H:%M:%S.%f').minute
 
@@ -92,7 +116,11 @@ def set_post_data(category):
                 datetime.now().year - datetime.strptime(date, '%Y-%m-%d %H:%M:%S.%f').year) + ' წელის'
 
         # post_date = f'{post_date_min} {post_date_hour} {post_date_day}, {post_date_month}, {post_date_year} '
-        info = (title, post_date, category)
+
+
+        image_url = f'/category/image/{post_id}'
+
+        info = (title, post_date, category, image_url,post_id )
         post_list.append(info)
 
 
@@ -246,8 +274,25 @@ def registration():
     return render_template('registration.html')
 
 
-@app.route('/open')
-def open():
+@app.route('/open/<int:id>', methods=['GET', 'POST'])
+def open(id):
+
+
+
+    if request.method == 'POST':
+
+
+        comment = request.form['comment']
+
+        user_mail = str(session['user'])
+        print(comment)
+
+
+        Comments_obj = Comments(comment=comment, comment_author_email=user_mail, post_id=id )
+        db.session.add(Comments_obj)
+        db.session.commit()
+
+
     return render_template('open.html')
 
 
@@ -315,11 +360,21 @@ def add():
         return redirect(url_for('home'))
 
 
-# #
-# @app.route("/category=<CATEGORY>")
-# def category(CATEGORY):
-#
-#     return render_template('category.html')
+
+@app.route("/category/image/<id>")
+def category(id):
+
+    if 'user' in session:
+
+        con = sqlite3.connect('urchie.sqlite3')
+        cursor = con.cursor()
+        cursor.execute(f"SELECT post_image FROM posts where id={id}")
+        result = cursor.fetchone()
+        image_bytes = result[0]
+        bytes_io = BytesIO(image_bytes)
+        return send_file(bytes_io, mimetype='image/jpeg')
+    else:
+        return redirect(url_for('home'))
 
 
 if __name__ == '__main__':
