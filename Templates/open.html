@@ -61,7 +61,7 @@
 
             <textarea name="comment" id="text-input" contenteditable="true"></textarea>
             <div class="open_send_div">
-                    <button class="open_send_rcheva" type="submit" onClick="document.location.reload(true)"> რჩევის დამატება </button>
+                    <button class="open_send_rcheva" type="submit"> რჩევის დამატება </button>
             </div>
             
 
@@ -69,7 +69,7 @@
         </form>
     {% for each in comments %}
         <div class="open_rchva">
-            <img  class='open_topic_user'src="/profile/image/{{each[1]}}" alt="">
+            <img  class='open_topic_user' src="/profile/image/{{each[1]}}" alt="">
             <h1 class="open_topic_rcheva">{{each[0]}}</h1>
         </div>
 

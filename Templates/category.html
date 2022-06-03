@@ -24,74 +24,100 @@
     {% block content%}
     <section class="main_content">
 
-
-    <form method="post" class="main-carousel">
-            <div class="cell">
-                <button  class="checkbox-tools" type="radio"   name="category" id="tool-1" value="ზოგადი" checked ></button>
-                <label class="for-checkbox-tools" type="submit" for="tool-1">
+        <form method="get" class="main-carousel">
+        <div class="cell">
+            <a href="/categories/{{category}}">
+                <button  class="checkbox-tools" type="radio" name="category" id="tool-1" value="ზოგადი" checked ></button>
+                <label class="for-checkbox-tools" for="tool-1">
                     ზოგადი
-                </label></div>
+                </label>
+            </a>
+
+        </div>
             <div class="cell">
-                <button class="checkbox-tools" type="radio" name="category" id="tool-2" value="გართობა" ></button>
-                <label class="for-checkbox-tools" for="tool-2">
+
+                    <button class="checkbox-tools" type="radio" name="category"  value="გართობა"id="tool-2"></button>
+                    <label class="for-checkbox-tools" for="tool-2">
                     გართობა
-                </label>
+                    </label>
+
+
             </div>
             <div class="cell">
-                <button class="checkbox-tools" type="radio" name="category" id="tool-3" value="პროგრამირება" ></button>
-                <label class="for-checkbox-tools" for="tool-3">
-                პროგრამირება
-                </label>
+
+                    <button class="checkbox-tools" type="radio" name="category" value="პროგრამირება" id="tool-3"></button>
+                    <label class="for-checkbox-tools" for="tool-3">
+                    პროგრამირება
+                    </label>
+
+
             </div>
+            <div class="cell">
 
-                <div class="cell">
-
-                    <button class="checkbox-tools" type="radio" name="category" id="tool-4" value="მუსიკა" ></button>
-
+                    <button class="checkbox-tools" type="radio" name="category" value="მუსიკა" id="tool-4"></button>
                     <label class="for-checkbox-tools" for="tool-4">
                     მუსიკა
                     </label>
+
+            </div>
+            <div class="cell">
+
+                    <button class="checkbox-tools" type="radio" name="category" value="ურთიერთობები" id="tool-5"></button>
+                    <label class="for-checkbox-tools" for="tool-5">
+                        ურთიერთობები
+                    </label>
+
+            </div>
+            <div class="cell">
+
+                    <button class="checkbox-tools" type="radio" name="category" value="კულინარია" id="tool-6"></button>
+                    <label class="for-checkbox-tools" for="tool-6">
+                        კულინარია
+                    </label>
+
+
+            </div>
+            <div class="cell">
+
+                    <button class="checkbox-tools" type="radio" name="category" value="სპორტი" id="tool-7"></button>
+                    <label class="for-checkbox-tools" for="tool-7">
+                        სპორტი
+                    </label>
+
+
+            </div>
+            <div class="cell">
+
+                    <button class="checkbox-tools" type="radio" name="category" value="ხელოვნება" id="tool-8"></button>
+                    <label class="for-checkbox-tools" for="tool-8">
+                        ხელოვნება
+                    </label>
+
+
+            </div>
+            <div class="cell">
+
+                    <button class="checkbox-tools" type="radio" name="category" value="მეცნიერება" id="tool-9"></button>
+                    <label class="for-checkbox-tools" for="tool-9">
+                        მეცნიერება
+                    </label>
+
+
+            </div>
+            <div class="cell">
+
+                    <button class="checkbox-tools" type="radio" name="category" value="პოლიტიკა" id="tool-10"></button>
+                    <label class="for-checkbox-tools" for="tool-10">
+                        პოლიტიკა
+                    </label>
+
+
             </div>
 
 
-            <div class="cell">
-                <button class="checkbox-tools" type="radio" name="category" id="tool-5"  value="ურთიერთობები"></button>
-                <label class="for-checkbox-tools" for="tool-5">
-                    ურთიერთობები
-                </label>
-            </div>
-            <div class="cell">
-                <button class="checkbox-tools" type="radio" name="category" id="tool-6"  value="კულინარია"></button>
-                <label class="for-checkbox-tools" for="tool-6">
-                    კულინარია
-                </label>
-            </div>
-            <div class="cell">
-                <button class="checkbox-tools" type="radio" name="category" id="tool-7"  value="სპორტი"></button>
-                <label class="for-checkbox-tools" for="tool-7">
-                    სპორტი
-                </label>
-            </div>
-            <div class="cell">
-                <button class="checkbox-tools" type="radio" name="category" id="tool-8"  value="ხელოვნება"></button>
-                <label class="for-checkbox-tools" for="tool-8">
-                    ხელოვნება
-                </label>
-            </div>
-            <div class="cell">
-                <button class="checkbox-tools" type="radio" name="category" id="tool-9"  value="მეცნიერება"></button>
-                <label class="for-checkbox-tools" for="tool-9">
-                    მეცნიერება
-                </label>
-            </div>
-            <div class="cell">
-                <button class="checkbox-tools" type="radio" name="category" id="tool-10"  value="პოლიტიკა"></button>
-                <label class="for-checkbox-tools" for="tool-10">
-                    პოლიტიკა
-                </label>
-            </div>
 
           </form>
+
 
 
 

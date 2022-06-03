@@ -132,104 +132,39 @@ def set_post_data(category):
 @app.route('/', methods=['GET', 'POST'])
 def home():
     if 'user' in session:
-        if request.method == 'POST':
-            category = request.form['category']
+        if request.method == 'GET':
+            category_type = request.args.get('category')
             # post_info = Posts.query.filter_by(category=category).all()
             #
-            # print(post_info)
+            print(category_type)
 
-            # con = sqlite3.connect('urchie.sqlite3')
-            # cursor = con.cursor()
+            if category_type == 'გართობა':
+                return render_template('category.html', info=set_post_data(category_type))
+            elif category_type == 'პროგრამირება':
+                return render_template('category.html', info=set_post_data(category_type))
+            elif category_type == 'მუსიკა':
+                return render_template('category.html', info=set_post_data(category_type))
+            elif category_type == 'ურთიერთობები':
+                return render_template('category.html', info=set_post_data(category_type))
+            elif category_type == 'კულინარია':
+                return render_template('category.html', info=set_post_data(category_type))
+            elif category_type == 'სპორტი':
+                return render_template('category.html', info=set_post_data(category_type))
+            elif category_type == 'ხელოვნება':
+                return render_template('category.html', info=set_post_data(category_type))
+            elif category_type == 'მეცნიერება':
+                return render_template('category.html', info=set_post_data(category_type))
+            elif category_type == 'პოლიტიკა':
+                return render_template('category.html', info=set_post_data(category_type))
+            elif category_type == 'ზოგადი':
+                return redirect(url_for('home'))
 
-            if category == 'გართობა':
-                # set_post_data(category)
-                return render_template('category.html', info=set_post_data(category))
-                # cursor.execute(f"SELECT title,upload_date,category FROM posts where category='{category}'")
-                # post_info = cursor.fetchall()
-                #
-                # # print(post_info)
-                #
-                # post_list = []
-                #
-                # for each in post_info:
-                #
-                #     title = each[0]
-                #     # if len(title) > 1:
-                #     #     title = title[0] + '...'
-                #     date = each[1]
-                #     # print(title)
-                #     # print(date)
-                #
-                #     post_date_min = datetime.now().minute - datetime.strptime(date, '%Y-%m-%d %H:%M:%S.%f').minute
-                #
-                #     post_date_hour = datetime.now().hour - datetime.strptime(date, '%Y-%m-%d %H:%M:%S.%f').hour
-                #
-                #     post_date_day = datetime.now().day - datetime.strptime(date, '%Y-%m-%d %H:%M:%S.%f').day
-                #
-                #     post_date_month = datetime.now().month - datetime.strptime(date, '%Y-%m-%d %H:%M:%S.%f').month
-                #
-                #     post_date_year = datetime.now().year - datetime.strptime(date, '%Y-%m-%d %H:%M:%S.%f').year
-                #
-                #     # post_date = str(datetime.now().year - datetime.strptime(date, '%Y-%m-%d %H:%M:%S.%f').year) + 'წლის'
-                #
-                #     if post_date_min != 0 and post_date_hour == 0:
-                #         post_date = str(
-                #             datetime.now().minute - datetime.strptime(date, '%Y-%m-%d %H:%M:%S.%f').minute) + ' წუთის'
-                #
-                #     elif post_date_hour != 0 and post_date_day == 0:
-                #         post_date = str(
-                #             datetime.now().hour - datetime.strptime(date, '%Y-%m-%d %H:%M:%S.%f').hour) + ' საათის'
-                #
-                #     elif post_date_day != 0 and post_date_month == 0:
-                #         post_date = str(
-                #             datetime.now().day - datetime.strptime(date, '%Y-%m-%d %H:%M:%S.%f').day) + ' დღის'
-                #
-                #     elif post_date_month != 0 and post_date_year == 0:
-                #         post_date = str(
-                #             datetime.now().month - datetime.strptime(date, '%Y-%m-%d %H:%M:%S.%f').month) + ' თვის'
-                #
-                #     else:
-                #         post_date = str(
-                #             datetime.now().year - datetime.strptime(date, '%Y-%m-%d %H:%M:%S.%f').year) + ' წელის'
-                #
-                #     # post_date = f'{post_date_min} {post_date_hour} {post_date_day}, {post_date_month}, {post_date_year} '
-                #     info = (title, post_date, category)
-                #     post_list.append(info)
-                # print(post_list)
-
-                #
-                # user_mail = str(session['user'])
-                # con = sqlite3.connect('urchie.sqlite3')
-                # cursor = con.cursor()
-                # cursor.execute(f"SELECT user_image FROM users where e_mail='{user_mail}'")
-                # result = cursor.fetchone()
-                # image_bytes = result[0]
-                # bytes_io = BytesIO(image_bytes)
-
-
-            elif category == 'პროგრამირება':
-                return render_template('category.html', info=set_post_data(category))
-            elif category == 'მუსიკა':
-                return render_template('category.html', info=set_post_data(category))
-            elif category == 'ურთიერთობები':
-                return render_template('category.html', info=set_post_data(category))
-            elif category == 'კულინარია':
-                return render_template('category.html', info=set_post_data(category))
-            elif category == 'სპორტი':
-                return render_template('category.html', info=set_post_data(category))
-            elif category == 'ხელოვნება':
-                return render_template('category.html', info=set_post_data(category))
-            elif category == 'მეცნიერება':
-                return render_template('category.html', info=set_post_data(category))
-            elif category == 'პოლიტიკა':
-                return render_template('category.html', info=set_post_data(category))
-            elif category == 'ზოგადი':
-                return render_template('category.html', info=set_post_data(category))
-
-        return render_template('index.html')
+        return render_template('index.html', category=category_type)
 
     else:
         return render_template('first.html')
+
+
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -287,6 +222,7 @@ def open(id):
 
         comment_list = []
 
+
         for each_post in post_obj:
             post_title = str(each_post).split(',')[2]
             post_description = str(each_post).split(',')[3]
@@ -303,6 +239,7 @@ def open(id):
             Comments_obj = Comments(comment=comment, comment_author_id=user_id, post_id=id)
             db.session.add(Comments_obj)
             db.session.commit()
+            return redirect(url_for('open',id=id))
 
         for each_comment in comment_obj:
 
@@ -311,7 +248,8 @@ def open(id):
             comment_tuple = (comment, comment_author_id)
             comment_list.append(comment_tuple)
 
-
+        comment_list.reverse()
+        print(comment_list)
         return render_template('open.html', title=post_title, description=post_description, time=post_upload_date, category=post_category, id=id, comments=comment_list)
 
 
