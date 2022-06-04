@@ -12,7 +12,6 @@ from flask import Flask, redirect, url_for, render_template, request, session
 from io import BytesIO
 from flask import send_file
 
-
 app = Flask(__name__)
 
 app.config['SECRET_KEY'] = 'URCHIE_KEY'
@@ -49,19 +48,14 @@ class Posts(db.Model):
         return f"{self.id},{self.author},{self.title},{self.description},{self.category},{self.upload_date},{self.post_image}"
 
 
-
-
 class Comments(db.Model):
     id = db.Column(db.Integer, primary_key=True, nullable=False)
     post_id = db.Column(db.Integer, nullable=False)
     comment = db.Column(db.String, nullable=False)
     comment_author_id = db.Column(db.Integer, nullable=False)
 
-
     def __str__(self):
         return f"{self.post_id}%${self.comment}%${self.comment_author_id}"
-
-
 
 
 def set_post_data(category):
@@ -84,7 +78,6 @@ def set_post_data(category):
             title = title[:315] + '...'
 
         date = each[2]
-
 
         post_date_min = datetime.now().minute - datetime.strptime(date, '%Y-%m-%d %H:%M:%S.%f').minute
 
@@ -120,12 +113,10 @@ def set_post_data(category):
 
         # post_date = f'{post_date_min} {post_date_hour} {post_date_day}, {post_date_month}, {post_date_year} '
 
-
         image_url = f'/category/image/{post_id}'
 
-        info = (title, post_date, category, image_url,post_id, author_id)
+        info = (title, post_date, category, image_url, post_id, author_id)
         post_list.append(info)
-
 
     return post_list
 
@@ -133,11 +124,18 @@ def set_post_data(category):
 @app.route('/', methods=['GET', 'POST'])
 def home():
     if 'user' in session:
+
+        if request.method == 'POST':
+            if request.form['search'] != '':
+                search_sentence = request.form['search']
+                return redirect(url_for('search', keyword=search_sentence))
+
         if request.method == 'GET':
+
             category_type = request.args.get('category')
             # post_info = Posts.query.filter_by(category=category).all()
             #
-            print(category_type)
+            # print(category_type)
 
             if category_type == 'გართობა':
                 return render_template('category.html', info=set_post_data(category_type))
@@ -162,10 +160,9 @@ def home():
 
         return render_template('index.html', category=category_type)
 
+
     else:
         return render_template('first.html')
-
-
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -214,15 +211,18 @@ def registration():
 
 @app.route('/open/<int:id>', methods=['GET', 'POST'])
 def open(id):
-
     if 'user' in session:
+
+        if request.method == 'POST':
+            if request.form['search'] != '':
+                search_sentence = request.form['search']
+                return redirect(url_for('search', keyword=search_sentence))
 
         post_obj = Posts.query.filter_by(id=id).all()
         comment_obj = Comments.query.filter_by(post_id=id).all()
         user_obj = Users.query.filter_by(e_mail=str(session['user'])).all()
 
         comment_list = []
-
 
         for each_post in post_obj:
             post_title = str(each_post).split(',')[2]
@@ -235,29 +235,25 @@ def open(id):
 
         if request.method == 'POST':
             comment = request.form['comment']
-            print(comment)
+            # print(comment)
 
             Comments_obj = Comments(comment=comment, comment_author_id=user_id, post_id=id)
             db.session.add(Comments_obj)
             db.session.commit()
-            return redirect(url_for('open',id=id))
+            return redirect(url_for('open', id=id))
 
         for each_comment in comment_obj:
-
             comment = str(each_comment).split('%$')[1]
             comment_author_id = str(each_comment).split('%$')[2]
             comment_tuple = (comment, comment_author_id)
             comment_list.append(comment_tuple)
 
         comment_list.reverse()
-        print(comment_list)
-        return render_template('open.html', title=post_title, description=post_description, time=post_upload_date, category=post_category, id=id, comments=comment_list)
-
+        # print(comment_list)
+        return render_template('open.html', title=post_title, description=post_description, time=post_upload_date,
+                               category=post_category, id=id, comments=comment_list)
 
     return redirect(url_for('home'))
-
-
-
 
 
 @app.route('/logout')
@@ -269,6 +265,12 @@ def logout():
 @app.route('/profile')
 def profile():
     if 'user' in session:
+
+        if request.method == 'POST':
+            if request.form['search'] != '':
+                search_sentence = request.form['search']
+                return redirect(url_for('search', keyword=search_sentence))
+
         user_mail = str(session['user'])
 
         user_info = Users.query.filter_by(e_mail=user_mail).all()
@@ -280,7 +282,7 @@ def profile():
 
         user_name = first_name + " " + last_name
 
-        return render_template('profile.html', user_name=user_name ,user_id=user_id)
+        return render_template('profile.html', user_name=user_name, user_id=user_id)
 
     else:
         return redirect(url_for('home'))
@@ -304,6 +306,10 @@ def set_image(id):
 def add():
     if 'user' in session:
         if request.method == 'POST':
+            if request.form['search'] != '':
+                search_sentence = request.form['search']
+                return redirect(url_for('search', keyword=search_sentence))
+
             title = request.form['add_title']
             description = request.form['add_description']
             category = request.form['add_category']
@@ -324,10 +330,8 @@ def add():
         return redirect(url_for('home'))
 
 
-
 @app.route("/category/image/<id>")
 def category(id):
-
     if 'user' in session:
 
         con = sqlite3.connect('urchie.sqlite3')
@@ -340,9 +344,43 @@ def category(id):
     else:
         return redirect(url_for('home'))
 
+
 @app.route('/search/<keyword>')
 def search(keyword):
-    return render_template('search.html')
+
+    if 'user' in session:
+
+        if request.method == 'POST' and request.form['search'] != '':
+            search_sentence = request.form['search']
+            return redirect(url_for('search', keyword=search_sentence))
+
+        if request.method == 'GET':
+
+            con = sqlite3.connect('urchie.sqlite3')
+            cursor = con.cursor()
+            cursor.execute(
+                f"SELECT title,description,author_id,id FROM posts WHERE title LIKE '%{keyword}%' OR description LIKE '%{keyword}%'")
+
+            search_data_list = []
+            search_data = cursor.fetchall()
+
+            for each in search_data:
+                title = each[0]
+                author_id = each[2]
+                id = each[3]
+
+                search_tuple = (title, author_id, id)
+
+                search_data_list.append(search_tuple)
+
+            return render_template('search.html', search=search_data_list)
+
+
+        return render_template('search.html')
+
+
+    return redirect(url_for('home'))
+
 
 if __name__ == '__main__':
     app.run(debug=True)
