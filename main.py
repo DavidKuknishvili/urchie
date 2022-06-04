@@ -262,7 +262,7 @@ def logout():
     return redirect(url_for('home'))
 
 
-@app.route('/profile')
+@app.route('/profile', methods=['GET', 'POST'])
 def profile():
     if 'user' in session:
 
@@ -345,13 +345,14 @@ def category(id):
         return redirect(url_for('home'))
 
 
-@app.route('/search/<keyword>')
+@app.route('/search/<keyword>', methods=['GET', 'POST'])
 def search(keyword):
 
     if 'user' in session:
 
-        if request.method == 'POST' and request.form['search'] != '':
+        if request.method == 'POST':
             search_sentence = request.form['search']
+            print(search_sentence)
             return redirect(url_for('search', keyword=search_sentence))
 
         if request.method == 'GET':
