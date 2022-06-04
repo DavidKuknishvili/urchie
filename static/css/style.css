@@ -261,7 +261,7 @@ body{
 }
 
 .topic{
-    margin-top: 25px;
+    margin-top: 15px;
     width: 100%;
     height: 150px;
     background-color: #ffffff;
@@ -1228,5 +1228,87 @@ input[type="color"]::-moz-color-swatch {
     background-color: #1D1D1D;
     border-radius: 18px;
     margin-bottom: 25%;
+
+}
+.card_body{
+    background: #FFFFFF;
+    border-radius: 30px;
+    width: 23%;
+    overflow: hidden;
+    height: 350px;
+    display: inline-block;
+    margin: 15px 21px 25px 0;
+
+
+}
+.card_a{
+    width: 300px;
+    height: fit-content;
+}
+.card_body:hover{
+    box-shadow: 0 8px 16px 0 rgb(0 0 0 / 20%);
+    transition: 1000ms;
+}
+.card_img_div{
+    width: 400px;
+}
+.card_img{
+    width: 100%
+}
+
+.card-title{
+    font-family: "BPG Nino Mtavruli", sans-serif;
+    font-weight: bold;
+    object-fit: cover;
+    font-size: 16px;
+    color: rgba(0, 0, 0, 0.87);
+    margin-top: 30px;
+    margin-bottom: 0;
+    min-height: 40px;
+    margin-left: 10px;
+    margin-right: 10px;
+    display: flex;
+}
+.card_author_img_div{
+    width: 60px;
+    height: 60px;
+
+}
+.card_author_img{
+    margin-left: 24%;
+    width: 100%;
+    height: 100%;
+    border-radius: 100%;
+    object-fit: cover;
+    border: 10px solid #FFFFFF;
+
+}
+.card_img_div{
+    width: 100%;
+    height: 110px;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+.popular_title{
+    font-family: "BPG Nino Mtavruli", sans-serif;
+    font-size: 25px;
+    font-weight: bold;
+    margin-left: 10px;
+
+}
+.popular_div{
+    margin-top: 35px;
+}
+.general_title{
+    font-family: "BPG Nino Mtavruli", sans-serif;
+    font-size: 25px;
+    font-weight: bold;
+    margin-left: 10px;
+
+}
+.general_div{
+    margin-top: 35px;
+
 
 }

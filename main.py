@@ -338,6 +338,9 @@ def category(id):
     else:
         return redirect(url_for('home'))
 
+@app.route('/search/<keyword>')
+def search(keyword):
+    return render_template('search.html')
 
 if __name__ == '__main__':
     app.run(debug=True)
