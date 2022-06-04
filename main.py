@@ -275,10 +275,11 @@ def profile():
         for each in user_info:
             first_name = str(each).split(',')[1]
             last_name = str(each).split(',')[2]
+            user_id = str(each).split(',')[0]
 
         user_name = first_name + " " + last_name
 
-        return render_template('profile.html', user_name=user_name)
+        return render_template('profile.html', user_name=user_name ,user_id=user_id)
 
     else:
         return redirect(url_for('home'))
