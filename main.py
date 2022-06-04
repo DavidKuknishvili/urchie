@@ -67,7 +67,7 @@ class Comments(db.Model):
 def set_post_data(category):
     con = sqlite3.connect('urchie.sqlite3')
     cursor = con.cursor()
-    cursor.execute(f"SELECT id, title,upload_date,category FROM posts where category='{category}'")
+    cursor.execute(f"SELECT id, title,upload_date,category, author_id FROM posts where category='{category}'")
     post_info = cursor.fetchall()
 
     # print(post_info)
@@ -78,6 +78,7 @@ def set_post_data(category):
         post_id = each[0]
 
         title = each[1]
+        author_id = each[4]
 
         if len(title) > 315:
             title = title[:315] + '...'
@@ -122,7 +123,7 @@ def set_post_data(category):
 
         image_url = f'/category/image/{post_id}'
 
-        info = (title, post_date, category, image_url,post_id )
+        info = (title, post_date, category, image_url,post_id, author_id)
         post_list.append(info)
 
 
