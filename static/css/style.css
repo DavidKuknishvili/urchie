@@ -1230,15 +1230,19 @@ input[type="color"]::-moz-color-swatch {
     margin-bottom: 25%;
 
 }
+.card_body_div{
+        display: inline-block;
+}
 .card_body{
     background: #FFFFFF;
     border-radius: 30px;
-    width: 23%;
+    width: 300px;
     overflow: hidden;
     height: 350px;
     display: inline-block;
     margin: 15px 21px 25px 0;
-
+    display: flex;
+    flex-direction: column;
 
 }
 .card_a{
@@ -1262,7 +1266,7 @@ input[type="color"]::-moz-color-swatch {
     object-fit: cover;
     font-size: 16px;
     color: rgba(0, 0, 0, 0.87);
-    margin-top: 30px;
+    margin-top: 40px;
     margin-bottom: 0;
     min-height: 40px;
     margin-left: 10px;
@@ -1311,4 +1315,16 @@ input[type="color"]::-moz-color-swatch {
     margin-top: 35px;
 
 
+}
+.comment_count_div{
+    margin-top: auto;
+    padding: 12px;
+}
+.comment_count{
+    background-color: #0079cf;
+    display: inline-block;
+    padding: 10px 16px 10px 16px;
+    color: white;
+    border-radius: 25px;
+    font-family: "BPG Nino Mtavruli", sans-serif;
 }

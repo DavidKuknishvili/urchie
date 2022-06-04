@@ -10,22 +10,30 @@
 
         {% for each in search %}
 
-            <a href="" class="card_a">
-                <div class="card_body">
-                    <div class=card_imgs_div">
-                        <div class="card_img_div">
-                            <img class="card_img" src="/category/image/{{each[2]}}" alt="">
+            <a href="/open/{{each[2]}}" class="card_a">
+                <div class="card_body_div">
+                    <div class="card_body">
+                        <div class=card_imgs_div">
+                            <div class="card_img_div">
+                                <img class="card_img" src="/category/image/{{each[2]}}" alt="">
+
+                            </div>
+                            <div class="card_author_img_div">
+                                <img class='card_author_img'src="/profile/image/{{each[1]}}" alt="">
+
+                            </div>
+                        </div>
+                        <div class="card_text">
+                            <p class="card-title">{{each[0]}}</p>
+                        </div>
+                        <div class="comment_count_div">
+                            <p class="comment_count">
+                                 {{each[3]}} კომენტარი
+                            </p>
 
                         </div>
-                        <div class="card_author_img_div">
-                            <img class='card_author_img'src="/profile/image/{{each[1]}}" alt="">
 
-                        </div>
                     </div>
-                    <div class="card_text">
-                        <p class="card-title">{{each[0]}}</p>
-                    </div>
-
                 </div>
             </a>
         {%endfor%}

@@ -73,6 +73,8 @@ def set_post_data(category):
 
         title = each[1]
         author_id = each[4]
+        cursor.execute(f'select count(post_id) from comments where post_id = {post_id}')
+        comment_count = cursor.fetchone()[0]
 
         if len(title) > 315:
             title = title[:315] + '...'
@@ -115,7 +117,7 @@ def set_post_data(category):
 
         image_url = f'/category/image/{post_id}'
 
-        info = (title, post_date, category, image_url, post_id, author_id)
+        info = (title, post_date, comment_count, image_url, post_id, author_id)
         post_list.append(info)
 
     return post_list
@@ -365,12 +367,17 @@ def search(keyword):
             search_data_list = []
             search_data = cursor.fetchall()
 
+
+
+
             for each in search_data:
                 title = each[0]
                 author_id = each[2]
                 id = each[3]
+                cursor.execute(f'select count(post_id) from comments where post_id = {id}')
+                comment_count = cursor.fetchone()[0]
 
-                search_tuple = (title, author_id, id)
+                search_tuple = (title, author_id, id, comment_count)
 
                 search_data_list.append(search_tuple)
 
