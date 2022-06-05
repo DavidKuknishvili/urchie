@@ -69,7 +69,10 @@
         </form>
     {% for each in comments %}
         <div class="open_rchva">
-            <img  class='open_topic_user' src="/profile/image/{{each[1]}}" alt="">
+            <a class='open_topic_user_a open_topic_user' href="/profilePage/{{each[1]}}">
+                <img  class='open_topic_user' src="/profile/image/{{each[1]}}" alt="">
+
+            </a>
             <h1 class="open_topic_rcheva">{{each[0]}}</h1>
         </div>
 

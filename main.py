@@ -74,23 +74,25 @@ def publishing_date(date):
 
     if post_date_min != 0 and post_date_hour == 0:
         post_date = str(
-            datetime.now().minute - datetime.strptime(date, '%Y-%m-%d %H:%M:%S.%f').minute) + ' წუთის'
+            abs(datetime.now().minute - datetime.strptime(date, '%Y-%m-%d %H:%M:%S.%f').minute)) + ' წუთის წინ'
 
     elif post_date_hour != 0 and post_date_day == 0:
         post_date = str(
-            datetime.now().hour - datetime.strptime(date, '%Y-%m-%d %H:%M:%S.%f').hour) + ' საათის'
+            abs(datetime.now().hour - datetime.strptime(date, '%Y-%m-%d %H:%M:%S.%f').hour)) + ' საათის წინ'
 
     elif post_date_day != 0 and post_date_month == 0:
         post_date = str(
-            datetime.now().day - datetime.strptime(date, '%Y-%m-%d %H:%M:%S.%f').day) + ' დღის'
+            abs(datetime.now().day - datetime.strptime(date, '%Y-%m-%d %H:%M:%S.%f').day)) + ' დღის წინ'
 
     elif post_date_month != 0 and post_date_year == 0:
         post_date = str(
-            datetime.now().month - datetime.strptime(date, '%Y-%m-%d %H:%M:%S.%f').month) + ' თვის'
+            abs(datetime.now().month - datetime.strptime(date, '%Y-%m-%d %H:%M:%S.%f').month)) + ' თვის წინ'
 
-    else:
+    elif post_date_year != 0:
         post_date = str(
-            datetime.now().year - datetime.strptime(date, '%Y-%m-%d %H:%M:%S.%f').year) + ' წელის'
+            abs(datetime.now().year - datetime.strptime(date, '%Y-%m-%d %H:%M:%S.%f').year)) + ' წელის წინ '
+    else:
+        post_date = 'ახლახანს'
 
     return post_date
 
@@ -186,11 +188,11 @@ def general_posts():
     return general_post_list
 
 
-def profile_post():
+def profile_post(id):
     con = sqlite3.connect('urchie.sqlite3')
     cursor = con.cursor()
-    author_email = str(session['user'])
-    cursor.execute(f"SELECT id, author_id, title, category, upload_date  FROM posts WHERE author = '{author_email}'")
+
+    cursor.execute(f"SELECT id, author_id, title, category, upload_date  FROM posts WHERE author_id = '{id}'")
     post = cursor.fetchall()
     general_post_list = []
 
@@ -371,13 +373,13 @@ def profile():
 
         user_name = first_name + " " + last_name
 
-        return render_template('profile.html', user_name=user_name, user_id=user_id, profile_post=profile_post())
+        return render_template('profile.html', user_name=user_name, user_id=user_id, profile_post=profile_post(user_id))
 
     else:
         return redirect(url_for('home'))
 
 
-@app.route('/profile/image/<id>')
+@app.route('/profile/image/<int:id>')
 def set_image(id):
     if 'user' in session:
         con = sqlite3.connect('urchie.sqlite3')
@@ -424,7 +426,7 @@ def add():
         return redirect(url_for('home'))
 
 
-@app.route("/category/image/<id>")
+@app.route("/category/image/<int:id>")
 def category(id):
     if 'user' in session:
 
@@ -472,6 +474,33 @@ def search(keyword):
         return render_template('search.html')
 
     return redirect(url_for('home'))
+
+@app.route('/profilePage/<int:id>')
+def profile_guest(id):
+
+    if 'user' in session:
+
+        if request.args.get('search') is not None:
+            search_sentence = request.args.get('search')
+            return redirect(url_for('search', keyword=[f'{search_sentence}']))
+
+
+
+        user_info = Users.query.filter_by(id=id).all()
+
+        for each in user_info:
+            first_name = str(each).split(',')[1]
+            last_name = str(each).split(',')[2]
+            user_id = str(each).split(',')[0]
+
+        user_name = first_name + " " + last_name
+
+        return render_template('profile.html', user_name=user_name, user_id=user_id, profile_post=profile_post(id))
+
+    else:
+        return redirect(url_for('home'))
+
+
 
 
 if __name__ == '__main__':
