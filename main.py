@@ -167,10 +167,48 @@ def last_post():
 def general_posts():
     con = sqlite3.connect('urchie.sqlite3')
     cursor = con.cursor()
-    cursor.execute(f"SELECT id, author_id, title, category, upload_date  FROM posts WHERE id != {last_post()[0]} OR id != {popular_posts()[0][2]}")
+    cursor.execute(f"SELECT id, author_id, title, category, upload_date  FROM posts WHERE id != {last_post()[0]} and id != {popular_posts()[0][2]}  and id != {popular_posts()[1][2]} and id != {popular_posts()[2][2]} and id != {popular_posts()[3][2]}")
     post = cursor.fetchall()
 
-    return post
+    general_post_list = []
+    for each in post:
+        id = each[0]
+        author_id = each[1]
+        title = each[2]
+        category = each[3]
+        date = each[4]
+        upload_date = publishing_date(date)
+        general_tuple = (id, author_id, title, category, upload_date)
+        general_post_list.append(general_tuple)
+
+
+
+    return general_post_list
+
+
+def profile_post():
+    con = sqlite3.connect('urchie.sqlite3')
+    cursor = con.cursor()
+    author_email = str(session['user'])
+    cursor.execute(f"SELECT id, author_id, title, category, upload_date  FROM posts WHERE author = '{author_email}'")
+    post = cursor.fetchall()
+    general_post_list = []
+
+    for each in post:
+        id = each[0]
+        author_id = each[1]
+        title = each[2]
+        category = each[3]
+        date = each[4]
+        upload_date = publishing_date(date)
+        general_tuple = (id, author_id, title, category, upload_date)
+        general_post_list.append(general_tuple)
+
+    return general_post_list
+
+
+
+
 
 @app.route('/', methods=['GET', 'POST'])
 def home():
@@ -333,7 +371,7 @@ def profile():
 
         user_name = first_name + " " + last_name
 
-        return render_template('profile.html', user_name=user_name, user_id=user_id)
+        return render_template('profile.html', user_name=user_name, user_id=user_id, profile_post=profile_post())
 
     else:
         return redirect(url_for('home'))
