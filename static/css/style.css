@@ -869,8 +869,10 @@ figcaption{
 .open_topic{
     width: 100%;
     height: fit-content;
+    display: flex;
     background-color: #ffffff;
     border-radius: 40px;
+    flex-direction: column;
 
 }
 .open_topic_main_content{

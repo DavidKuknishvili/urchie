@@ -43,9 +43,9 @@ class Posts(db.Model):
     category = db.Column(db.String, nullable=False)
     upload_date = db.Column(db.DateTime, nullable=False)
     post_image = db.Column(db.LargeBinary, nullable=False)
-
+    author_id = db.Column(db.Integer, nullable=False)
     def __str__(self):
-        return f"{self.id},{self.author},{self.title},{self.description},{self.category},{self.upload_date},{self.post_image}"
+        return f"{self.id},{self.author},{self.title},{self.description},{self.category},{self.upload_date},{self.post_image},{self.author_id}"
 
 
 class Comments(db.Model):
@@ -56,6 +56,42 @@ class Comments(db.Model):
 
     def __str__(self):
         return f"{self.post_id}%${self.comment}%${self.comment_author_id}"
+
+
+def publishing_date(date):
+    post_date_min = datetime.now().minute - datetime.strptime(date, '%Y-%m-%d %H:%M:%S.%f').minute
+
+    post_date_hour = datetime.now().hour - datetime.strptime(date, '%Y-%m-%d %H:%M:%S.%f').hour
+
+    post_date_day = datetime.now().day - datetime.strptime(date, '%Y-%m-%d %H:%M:%S.%f').day
+
+    post_date_month = datetime.now().month - datetime.strptime(date, '%Y-%m-%d %H:%M:%S.%f').month
+
+    post_date_year = datetime.now().year - datetime.strptime(date, '%Y-%m-%d %H:%M:%S.%f').year
+
+    # post_date = str(datetime.now().year - datetime.strptime(date, '%Y-%m-%d %H:%M:%S.%f').year) + 'წლის'
+
+    if post_date_min != 0 and post_date_hour == 0:
+        post_date = str(
+            datetime.now().minute - datetime.strptime(date, '%Y-%m-%d %H:%M:%S.%f').minute) + ' წუთის'
+
+    elif post_date_hour != 0 and post_date_day == 0:
+        post_date = str(
+            datetime.now().hour - datetime.strptime(date, '%Y-%m-%d %H:%M:%S.%f').hour) + ' საათის'
+
+    elif post_date_day != 0 and post_date_month == 0:
+        post_date = str(
+            datetime.now().day - datetime.strptime(date, '%Y-%m-%d %H:%M:%S.%f').day) + ' დღის'
+
+    elif post_date_month != 0 and post_date_year == 0:
+        post_date = str(
+            datetime.now().month - datetime.strptime(date, '%Y-%m-%d %H:%M:%S.%f').month) + ' თვის'
+
+    else:
+        post_date = str(
+            datetime.now().year - datetime.strptime(date, '%Y-%m-%d %H:%M:%S.%f').year) + ' წელის'
+
+    return post_date
 
 
 def set_post_data(category):
@@ -80,38 +116,7 @@ def set_post_data(category):
             title = title[:315] + '...'
 
         date = each[2]
-
-        post_date_min = datetime.now().minute - datetime.strptime(date, '%Y-%m-%d %H:%M:%S.%f').minute
-
-        post_date_hour = datetime.now().hour - datetime.strptime(date, '%Y-%m-%d %H:%M:%S.%f').hour
-
-        post_date_day = datetime.now().day - datetime.strptime(date, '%Y-%m-%d %H:%M:%S.%f').day
-
-        post_date_month = datetime.now().month - datetime.strptime(date, '%Y-%m-%d %H:%M:%S.%f').month
-
-        post_date_year = datetime.now().year - datetime.strptime(date, '%Y-%m-%d %H:%M:%S.%f').year
-
-        # post_date = str(datetime.now().year - datetime.strptime(date, '%Y-%m-%d %H:%M:%S.%f').year) + 'წლის'
-
-        if post_date_min != 0 and post_date_hour == 0:
-            post_date = str(
-                datetime.now().minute - datetime.strptime(date, '%Y-%m-%d %H:%M:%S.%f').minute) + ' წუთის'
-
-        elif post_date_hour != 0 and post_date_day == 0:
-            post_date = str(
-                datetime.now().hour - datetime.strptime(date, '%Y-%m-%d %H:%M:%S.%f').hour) + ' საათის'
-
-        elif post_date_day != 0 and post_date_month == 0:
-            post_date = str(
-                datetime.now().day - datetime.strptime(date, '%Y-%m-%d %H:%M:%S.%f').day) + ' დღის'
-
-        elif post_date_month != 0 and post_date_year == 0:
-            post_date = str(
-                datetime.now().month - datetime.strptime(date, '%Y-%m-%d %H:%M:%S.%f').month) + ' თვის'
-
-        else:
-            post_date = str(
-                datetime.now().year - datetime.strptime(date, '%Y-%m-%d %H:%M:%S.%f').year) + ' წელის'
+        post_date = publishing_date(date)
 
         # post_date = f'{post_date_min} {post_date_hour} {post_date_day}, {post_date_month}, {post_date_year} '
 
@@ -122,17 +127,58 @@ def set_post_data(category):
 
     return post_list
 
+def popular_posts():
+    con = sqlite3.connect('urchie.sqlite3')
+    cursor = con.cursor()
+    cursor.execute(f"SELECT title, author_id, id  FROM posts ")
+    post = cursor.fetchall()
+
+    popular_posts_list = []
+
+
+
+    for each in post:
+        title = each[0]
+        author_id = each[1]
+        id = each[2]
+        cursor.execute(f'select count(post_id) from comments where post_id = {id}')
+        comment_count = cursor.fetchone()[0]
+
+        post_tuple = (title, author_id, id, comment_count)
+
+        popular_posts_list.append(post_tuple)
+
+
+    def sorter(elem):
+        return elem[3]
+
+    popular_posts_list.sort(key=sorter, reverse=True)
+
+    return popular_posts_list[:4]
+
+
+
+
+
+
+
 
 @app.route('/', methods=['GET', 'POST'])
 def home():
     if 'user' in session:
 
-        if request.method == 'POST':
-            if request.form['search'] != '':
-                search_sentence = request.form['search']
-                return redirect(url_for('search', keyword=search_sentence))
+
+
 
         if request.method == 'GET':
+
+            if request.args.get('search') is not None:
+                search_sentence = request.args.get('search')
+                return redirect(url_for('search', keyword=[f'{search_sentence}']))
+
+
+
+
 
             category_type = request.args.get('category')
             # post_info = Posts.query.filter_by(category=category).all()
@@ -160,7 +206,7 @@ def home():
             elif category_type == 'ზოგადი':
                 return redirect(url_for('home'))
 
-        return render_template('index.html', category=category_type)
+        return render_template('index.html', category=category_type, popular_posts=popular_posts())
 
 
     else:
@@ -215,10 +261,9 @@ def registration():
 def open(id):
     if 'user' in session:
 
-        if request.method == 'POST':
-            if request.form['search'] != '':
-                search_sentence = request.form['search']
-                return redirect(url_for('search', keyword=search_sentence))
+        if request.args.get('search') is not None:
+            search_sentence = request.args.get('search')
+            return redirect(url_for('search', keyword=[f'{search_sentence}']))
 
         post_obj = Posts.query.filter_by(id=id).all()
         comment_obj = Comments.query.filter_by(post_id=id).all()
@@ -231,6 +276,7 @@ def open(id):
             post_description = str(each_post).split(',')[3]
             post_category = str(each_post).split(',')[4]
             post_upload_date = str(each_post).split(',')[5]
+            date = publishing_date(post_upload_date)
 
         for each_user in user_obj:
             user_id = str(each_user).split(',')[0]
@@ -252,7 +298,7 @@ def open(id):
 
         comment_list.reverse()
         # print(comment_list)
-        return render_template('open.html', title=post_title, description=post_description, time=post_upload_date,
+        return render_template('open.html', title=post_title, description=post_description, time=date,
                                category=post_category, id=id, comments=comment_list)
 
     return redirect(url_for('home'))
@@ -268,10 +314,9 @@ def logout():
 def profile():
     if 'user' in session:
 
-        if request.method == 'POST':
-            if request.form['search'] != '':
-                search_sentence = request.form['search']
-                return redirect(url_for('search', keyword=search_sentence))
+        if request.args.get('search') is not None:
+            search_sentence = request.args.get('search')
+            return redirect(url_for('search', keyword=[f'{search_sentence}']))
 
         user_mail = str(session['user'])
 
@@ -307,10 +352,11 @@ def set_image(id):
 @app.route('/add', methods=['GET', 'POST'])
 def add():
     if 'user' in session:
+        if request.args.get('search') is not None:
+            search_sentence = request.args.get('search')
+            return redirect(url_for('search', keyword=[f'{search_sentence}']))
+
         if request.method == 'POST':
-            if request.form['search'] != '':
-                search_sentence = request.form['search']
-                return redirect(url_for('search', keyword=search_sentence))
 
             title = request.form['add_title']
             description = request.form['add_description']
@@ -320,8 +366,13 @@ def add():
 
             author = str(session['user'])
 
+            con = sqlite3.connect('urchie.sqlite3')
+            cursor = con.cursor()
+            cursor.execute(f"SELECT id FROM users where e_mail='{author}'")
+            author_id = cursor.fetchone()[0]
+
             post = Posts(author=author, title=title, description=description, category=category, upload_date=today_date,
-                         post_image=post_image.read())
+                         post_image=post_image.read(), author_id=author_id )
             db.session.add(post)
             db.session.commit()
 
@@ -352,12 +403,11 @@ def search(keyword):
 
     if 'user' in session:
 
-        if request.method == 'POST':
-            search_sentence = request.form['search']
-            print(search_sentence)
-            return redirect(url_for('search', keyword=search_sentence))
 
         if request.method == 'GET':
+            if request.args.get('search') is not None:
+                search_sentence = request.args.get('search')
+                return redirect(url_for('search', keyword=[f'{search_sentence}']))
 
             con = sqlite3.connect('urchie.sqlite3')
             cursor = con.cursor()
