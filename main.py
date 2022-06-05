@@ -44,6 +44,7 @@ class Posts(db.Model):
     upload_date = db.Column(db.DateTime, nullable=False)
     post_image = db.Column(db.LargeBinary, nullable=False)
     author_id = db.Column(db.Integer, nullable=False)
+
     def __str__(self):
         return f"{self.id},{self.author},{self.title},{self.description},{self.category},{self.upload_date},{self.post_image},{self.author_id}"
 
@@ -127,6 +128,7 @@ def set_post_data(category):
 
     return post_list
 
+
 def popular_posts():
     con = sqlite3.connect('urchie.sqlite3')
     cursor = con.cursor()
@@ -134,8 +136,6 @@ def popular_posts():
     post = cursor.fetchall()
 
     popular_posts_list = []
-
-
 
     for each in post:
         title = each[0]
@@ -148,7 +148,6 @@ def popular_posts():
 
         popular_posts_list.append(post_tuple)
 
-
     def sorter(elem):
         return elem[3]
 
@@ -157,28 +156,31 @@ def popular_posts():
     return popular_posts_list[:4]
 
 
+def last_post():
+    con = sqlite3.connect('urchie.sqlite3')
+    cursor = con.cursor()
+    cursor.execute(f"SELECT id, title, category, upload_date  FROM posts ORDER BY id DESC")
+    post = cursor.fetchone()
 
+    return post
 
+def general_posts():
+    con = sqlite3.connect('urchie.sqlite3')
+    cursor = con.cursor()
+    cursor.execute(f"SELECT id, author_id, title, category, upload_date  FROM posts WHERE id != {last_post()[0]} OR id != {popular_posts()[0][2]}")
+    post = cursor.fetchall()
 
-
-
+    return post
 
 @app.route('/', methods=['GET', 'POST'])
 def home():
     if 'user' in session:
-
-
-
 
         if request.method == 'GET':
 
             if request.args.get('search') is not None:
                 search_sentence = request.args.get('search')
                 return redirect(url_for('search', keyword=[f'{search_sentence}']))
-
-
-
-
 
             category_type = request.args.get('category')
             # post_info = Posts.query.filter_by(category=category).all()
@@ -206,8 +208,10 @@ def home():
             elif category_type == 'ზოგადი':
                 return redirect(url_for('home'))
 
-        return render_template('index.html', category=category_type, popular_posts=popular_posts())
-
+        return render_template('index.html', category=category_type, popular_posts=popular_posts(),
+                               title=last_post()[1],
+                               category_last_post=last_post()[2], upload_date=publishing_date(last_post()[3]),
+                               last_post_id=last_post()[0], general_posts=general_posts())
 
     else:
         return render_template('first.html')
@@ -357,7 +361,6 @@ def add():
             return redirect(url_for('search', keyword=[f'{search_sentence}']))
 
         if request.method == 'POST':
-
             title = request.form['add_title']
             description = request.form['add_description']
             category = request.form['add_category']
@@ -372,7 +375,7 @@ def add():
             author_id = cursor.fetchone()[0]
 
             post = Posts(author=author, title=title, description=description, category=category, upload_date=today_date,
-                         post_image=post_image.read(), author_id=author_id )
+                         post_image=post_image.read(), author_id=author_id)
             db.session.add(post)
             db.session.commit()
 
@@ -400,9 +403,7 @@ def category(id):
 
 @app.route('/search/<keyword>', methods=['GET', 'POST'])
 def search(keyword):
-
     if 'user' in session:
-
 
         if request.method == 'GET':
             if request.args.get('search') is not None:
@@ -417,9 +418,6 @@ def search(keyword):
             search_data_list = []
             search_data = cursor.fetchall()
 
-
-
-
             for each in search_data:
                 title = each[0]
                 author_id = each[2]
@@ -433,9 +431,7 @@ def search(keyword):
 
             return render_template('search.html', search=search_data_list)
 
-
         return render_template('search.html')
-
 
     return redirect(url_for('home'))
 

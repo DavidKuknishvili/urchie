@@ -135,17 +135,18 @@
         </div>
 
 
-        <a href="open">
+        <a href="/open/{{last_post_id}}">
+
             <div class="first_topic">
 
-                <img class="first_topic_image" src="https://www.travelweekly.com.au/wp-content/uploads/2017/03/iStock-512277914.jpg" alt="">
+                <img class="first_topic_image" src="/category/image/{{last_post_id}}" alt="">
     
-                <p class="first_topic_title">სათაური უნდა იყოს აქ ცოტა დიდი სათაური რომ გამოჩნდეს მაგიტომ ვწერ აქ რარაცეებს:) </p>
+                <p class="first_topic_title">{{title}}</p>
 
                 <div class="first_topic_time_category_div">
 
                     <h1 class="first_topic_category" >
-                        კატეგორია
+                        {{category_last_post}}
                     </h1>
                     <br>
                     <br>
@@ -159,7 +160,7 @@
                     <br>
                     <br>
                     <h1 class="first_topic_time" >
-                        1 წუთის წინ
+                        {{upload_date}} წინ
                     </h1>
                 </div>
 
@@ -172,7 +173,7 @@
         <div class="popular_div">
             <h1 class="popular_title">პოპულარული</h1>
             {%for each in popular_posts%}
-            <a href="" class="card_a">
+            <a href="/open/{{each[2]}}" class="card_a">
                 <div class="card_body_div">
                     <div class="card_body">
 
@@ -202,18 +203,21 @@
             {% endfor %}
         </div>
 
+
         <div class="general_div">
             <h1 class="general_title">ზოგადი</h1>
-            <a class="topic_a" href="open" >
+
+            {% for each in general_posts %}
+            <a class="topic_a" href="/open/{{each[0]}}" >
                 <div class="topic">
 
-                    <img class="topic_image" src="https://www.travelweekly.com.au/wp-content/uploads/2017/03/iStock-512277914.jpg" alt="" >
+                    <img class="topic_image" src="/category/image/{{each[0]}}" alt="" >
 
-                    <img class="topic_user_img" src="https://th.bing.com/th/id/R.8de7a26459f8b095690ff8a18e0c49b7?rik=hfPNQ8WbqLviFg&pid=ImgRaw&r=0" alt="">
+                    <img class="topic_user_img" src="/profile/image/{{each[1]}}" alt="">
 
 
                     <div>
-                        <h1 class="topic_title" >სათაური უნდა იყოს აქ ცოტა დიდი სათაური რომ გამოჩნდეს მაგიტომ ვწერ აქ რარაცეებს:)</h1>
+                        <h1 class="topic_title" >{{each[2]}}</h1>
                     </div>
 
 
@@ -221,17 +225,17 @@
 
                     <div class="topic_time_category_div">
                         <h1 class="profile-topic_category" >
-                            კატეგორია
+                            {{each[3]}}
                         </h1>
                         <br>
                         <h1 class="profile-topic_time" >
-                            1 წუთის წინ
+                            {{each[4]}} წინ
                         </h1>
 
                     </div>
 
 
-
+            {% endfor %}
 
                 </div>
 
