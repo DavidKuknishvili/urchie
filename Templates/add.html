@@ -23,7 +23,15 @@
         <div class="add_content">
           <br>
           <div class="add_button">
-            <button type="submit" name="bn_add" value="bn_add_value" class="add_topic_button">დამატება</button>
+              <div class="add_button_error_div">
+                    {% with message = get_flashed_messages(with_categories=true) %}
+                        {% for category, msg in message %}
+                            <p class="{{category}}">{{ msg }}</p>
+                        {% endfor %}
+                    {% endwith %}
+                    <button type="submit" name="bn_add" value="bn_add_value" class="add_topic_button">დამატება</button>
+              </div>
+
 
           </div>
           <div class="add_titile_div">
@@ -33,8 +41,8 @@
 
           </div>
 
-            <select class="add_category" name="add_category" id="">
-                <option value="აირჩიე კატეგორია">აირჩიე კატეგორია</option>
+            <select class="add_category" name="add_category" id="" >
+                <option value="აირჩიე კატეგორია" >აირჩიე კატეგორია</option>
                 <option value="გართობა">გართობა</option>
                 <option value="პროგრამირება">პროგრამირება</option>
                 <option value="მუსიკა">მუსიკა</option>
@@ -45,7 +53,7 @@
                 <option value="ხელოვნება">ხელოვნება</option>
                 <option value="მეცნიერება">მეცნიერება</option>
                 <option value="პოლიტიკა">პოლიტიკა</option>
-                <option value="სხვა">სხვა</option>
+
 
 
             </select>

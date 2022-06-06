@@ -1151,7 +1151,7 @@ input[type="color"]::-moz-color-swatch {
 }
 
 .add_topic_button{
-    margin-left: auto;
+
     width: 200px;
     height: 55px;
     font-size: 19px;
@@ -1165,6 +1165,10 @@ input[type="color"]::-moz-color-swatch {
 
 .add_button{
     padding-right: 35px;
+    justify-items: center;
+    display: flex;
+
+    align-items: flex-end;
 }
 .add_button{
     padding-right: 35px;
@@ -1342,3 +1346,23 @@ input[type="color"]::-moz-color-swatch {
     border-radius: 25px;
     font-family: "BPG Nino Mtavruli", sans-serif;
 }
+
+.register_error{
+    border: 2px solid rgb(237,64,55);
+}
+.img_error{
+    background-color: rgb(237,64,55);
+}
+.error{
+    font-family: "BPG Nino Mtavruli", sans-serif;
+    color: rgb(237,64,55);
+    font-weight: bold;
+    margin-right: 25px;
+}
+.add_button_error_div{
+    display: flex;
+    margin-left: auto;
+    align-items: center;
+}
+
+

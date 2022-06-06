@@ -33,17 +33,17 @@
                 <h3 class="resgistration-descritpion"> რეგისტრაციის გასავლელად აუცილებელია 3 ნაბიჯის გავლა.</h3>
                 <div class="form-group">
                     <label clss='login_email' for="email">ელ-ფოსტა</label>
-                    <input class="form-group_input" type="email" name="email" id="email"
+                    <input class="{{mail_error}} form-group_input" type="email" name="email" id="email"
                            placeholder="შეიყვანე ელ-ფოსტა">
                 </div>
                 <div class="form-group">
                     <label for="password">პაროლი</label>
-                    <input class="form-group_input" type="password" name="password" id="password"
+                    <input class=" {{password_error}} form-group_input" type="password" name="password" id="password"
                            placeholder="შეიყვანე პაროლი" >
                 </div>
                 <div class="form-group">
                     <label for="again_password">პაროლი</label>
-                    <input class="form-group_input" type="password" name="again_password" id="again_password"
+                    <input class="{{password_error}} form-group_input" type="password" name="again_password" id="again_password"
                            placeholder="გაიმეორე პაროლი" >
                 </div>
                 <button class="registration_next" type="button" id="next" data-next>შემდეგი</button>
@@ -54,17 +54,17 @@
                 <div class="form-group">
                     <div class="form-group">
                         <label for="firstName">სახელი</label>
-                        <input class="form-group_input" type="text" name="firstName" id="firstName"
+                        <input class=" {{firstname_error}} form-group_input" type="text" name="firstName" id="firstName"
                                placeholder="შეიყვანე სახელი">
                     </div>
                     <div class="form-group">
                         <label for="lastName">გვარი</label>
-                        <input class="form-group_input" type="text" name="lastName" id="lastName"
+                        <input class=" {{lastname_error}} form-group_input" type="text" name="lastName" id="lastName"
                                placeholder="შეიყვანე გვარი">
                     </div>
                     <div class="form-group">
                         <label for="age">ასაკი</label>
-                        <input class="form-group_input" type="number" name="age" id="age" placeholder="შეიყვანე ასაკი">
+                        <input class=" {{age_error}} form-group_input" type="number" name="age" id="age" placeholder="შეიყვანე ასაკი">
                     </div>
                 </div>
 
@@ -80,7 +80,7 @@
                     <div class="file_container">
                         <input type="file" id="file-input" name="image" accept="image/png, image/jpeg"
                                onchange="preview()" multiple="">
-                        <label class='file_label' for="file-input">
+                        <label class=' {{image_error}} file_label' for="file-input">
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                                  xmlns="http://www.w3.org/2000/svg">
                                 <path d="M19.41 7.41L14.58 2.58C14.21 2.21 13.7 2 13.17 2H6C4.9 2 4.01 2.9 4.01 4L4 20C4 21.1 4.89 22 5.99 22H18C19.1 22 20 21.1 20 20V8.83C20 8.3 19.79 7.79 19.41 7.41ZM14.8 15H13V18C13 18.55 12.55 19 12 19C11.45 19 11 18.55 11 18V15H9.21C8.76 15 8.54 14.46 8.86 14.15L11.66 11.36C11.86 11.17 12.17 11.17 12.37 11.36L15.16 14.15C15.46 14.46 15.24 15 14.8 15V15ZM14 9C13.45 9 13 8.55 13 8V3.5L18.5 9H14Z"

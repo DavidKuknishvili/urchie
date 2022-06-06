@@ -6,7 +6,7 @@ import sqlite3
 from datetime import datetime
 
 # flask
-from flask import Flask, redirect, url_for, render_template, request, session
+from flask import Flask, redirect, url_for, render_template, request, session, flash
 
 # image
 from io import BytesIO
@@ -268,12 +268,20 @@ def login():
             password = request.form['password_login']
             users = Users.query.filter_by(e_mail=e_mail).all()
 
-            for each in users:
-                if e_mail == str(each).split(',')[4] and password == str(each).split(',')[5]:
-                    session['user'] = e_mail
-                    return redirect(url_for('home'))
-                else:
-                    return render_template('login.html')
+
+            if users == []:
+                return render_template('login.html', mail_error='error')
+            else:
+
+                for each in users:
+                    if e_mail == str(each).split(',')[4] and password != str(each).split(',')[5]:
+
+                        return render_template('login.html', password_error='error')
+
+                    else:
+                        session['user'] = e_mail
+                        return redirect(url_for('home'))
+
 
     return render_template('login.html')
 
@@ -286,15 +294,38 @@ def registration():
         age = request.form['age']
         e_mail = request.form['email']
         password = request.form['password']
+        again_password = request.form['again_password']
         user_image = request.files['image']
+        users = Users.query.filter_by(e_mail=e_mail).all()
+        print(type(user_image))
+        if users != []:
+            return render_template('registration.html', mail_error='register_error')
+        elif password != again_password or len(password) < 8:
+            return render_template('registration.html', password_error='register_error')
+        elif first_name == ""  :
 
-        user = Users(first_name=first_name, last_name=last_name, age=age, e_mail=e_mail, password=password,
-                     user_image=user_image.read())
-        db.session.add(user)
-        db.session.commit()
+            return render_template('registration.html', firstname_error='register_error')
+        elif last_name == '' :
+            return render_template('registration.html', lastname_error='register_error')
 
-        session['user'] = e_mail
-        return redirect(url_for('home'))
+        elif len(age) == 0:
+            return render_template('registration.html', age_error='register_error')
+
+        elif user_image.filename == '':
+            return render_template('registration.html', image_error = 'img_error')
+        else:
+
+
+            user = Users(first_name=first_name, last_name=last_name, age=age, e_mail=e_mail, password=password,
+                         user_image=user_image.read())
+            db.session.add(user)
+            db.session.commit()
+
+
+
+
+            session['user'] = e_mail
+            return redirect(url_for('home'))
 
         # print(f"first_name:{first_name}; last_name:{last_name}; age:{age}; e_mail:{e_mail}; password:{password}")
 
@@ -407,19 +438,23 @@ def add():
             post_image = request.files['add_image']
             today_date = datetime.now()
 
-            author = str(session['user'])
+            if title == '' or description == '' or category == '' or post_image.filename == '' :
+                flash('*ყველა ველის შევსება აუცილებელია', 'error')
+            else:
 
-            con = sqlite3.connect('urchie.sqlite3')
-            cursor = con.cursor()
-            cursor.execute(f"SELECT id FROM users where e_mail='{author}'")
-            author_id = cursor.fetchone()[0]
+                author = str(session['user'])
 
-            post = Posts(author=author, title=title, description=description, category=category, upload_date=today_date,
-                         post_image=post_image.read(), author_id=author_id)
-            db.session.add(post)
-            db.session.commit()
+                con = sqlite3.connect('urchie.sqlite3')
+                cursor = con.cursor()
+                cursor.execute(f"SELECT id FROM users where e_mail='{author}'")
+                author_id = cursor.fetchone()[0]
 
-            return redirect(url_for('home'))
+                post = Posts(author=author, title=title, description=description, category=category, upload_date=today_date,
+                             post_image=post_image.read(), author_id=author_id)
+                db.session.add(post)
+                db.session.commit()
+
+                return redirect(url_for('home'))
         return render_template('add.html')
 
     else:
