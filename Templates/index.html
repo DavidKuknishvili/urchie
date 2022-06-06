@@ -160,7 +160,7 @@
                     <br>
                     <br>
                     <h1 class="first_topic_time" >
-                        {{upload_date}} წინ
+                        {{upload_date}}
                     </h1>
                 </div>
 
@@ -172,6 +172,9 @@
 
         <div class="popular_div">
             <h1 class="popular_title">პოპულარული</h1>
+            <div class="card_a_container_div">
+
+
             {%for each in popular_posts%}
             <a href="/open/{{each[2]}}" class="card_a">
                 <div class="card_body_div">
@@ -201,6 +204,7 @@
                 </div>
             </a>
             {% endfor %}
+            </div>
         </div>
 
 
@@ -229,7 +233,7 @@
                         </h1>
                         <br>
                         <h1 class="profile-topic_time" >
-                            {{each[4]}} წინ
+                            {{each[4]}}
                         </h1>
 
                     </div>

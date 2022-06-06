@@ -235,11 +235,11 @@ body{
 }
 .first_topic_time{
     color: #ffffff;
-
+    float: right;
     outline: none;
     display: block;
     display: block;
-    margin-left: 25%;
+
     font-family: "BPG Nino Mtavruli", sans-serif;
 
 }
@@ -1050,7 +1050,10 @@ input[type="color"]::-moz-color-swatch {
     border-radius: 100%;
     object-position: center;
     object-fit: cover;
-    border: 2px solid #0094FF;
+    border: 4px solid #0094FF;
+}
+.open_topic_user_a{
+    border: none;
 }
 
 .open_topic_rcheva{
@@ -1285,6 +1288,9 @@ input[type="color"]::-moz-color-swatch {
     height: 60px;
 
 }
+.card_a_container_div{
+    text-align: center;
+}
 .card_author_img{
     margin-left: 24%;
     width: 100%;
@@ -1326,6 +1332,7 @@ input[type="color"]::-moz-color-swatch {
 .comment_count_div{
     margin-top: auto;
     padding: 12px;
+    text-align: left;
 }
 .comment_count{
     background-color: #0079cf;
