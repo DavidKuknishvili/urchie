@@ -164,10 +164,15 @@ def last_post():
 
     return post
 
+
 def general_posts():
     con = sqlite3.connect('urchie.sqlite3')
     cursor = con.cursor()
-    cursor.execute(f"SELECT id, author_id, title, category, upload_date  FROM posts WHERE id != {last_post()[0]} and id != {popular_posts()[0][2]}  and id != {popular_posts()[1][2]} and id != {popular_posts()[2][2]} and id != {popular_posts()[3][2]}")
+    cursor.execute(
+        f"SELECT id, author_id, title, category, upload_date  FROM posts"
+        f" WHERE id != {last_post()[0]} and id != {popular_posts()[0][2]}  "
+        f"and id != {popular_posts()[1][2]} and id != {popular_posts()[2][2]} "
+        f"and id != {popular_posts()[3][2]}")
     post = cursor.fetchall()
 
     general_post_list = []
@@ -180,8 +185,6 @@ def general_posts():
         upload_date = publishing_date(date)
         general_tuple = (id, author_id, title, category, upload_date)
         general_post_list.append(general_tuple)
-
-
 
     return general_post_list
 
@@ -205,9 +208,6 @@ def profile_post():
         general_post_list.append(general_tuple)
 
     return general_post_list
-
-
-
 
 
 @app.route('/', methods=['GET', 'POST'])
