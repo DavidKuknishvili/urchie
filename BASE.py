@@ -22,13 +22,15 @@ import sqlite3
 # l.reverse()
 # print(l)
 
-def takeSecond(elem):
-    return elem[1]
+# def takeSecond(elem):
+#     return elem[1]
+#
+#
+# # random list
+# random = [(2, 2), (3, 4), (4, 1), (1, 3)]
+#
+# # sort list with key
+# random.sort(key=takeSecond)
+# print('Sorted list:', ranikaaaaa sad xarndom)
+#
 
-
-# random list
-random = [(2, 2), (3, 4), (4, 1), (1, 3)]
-
-# sort list with key
-random.sort(key=takeSecond)
-print('Sorted list:', random)
