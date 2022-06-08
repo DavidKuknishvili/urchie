@@ -1,46 +1,50 @@
+{% extends 'base.html' %}
+{% block title%} პროფილის გვერდი {% endblock %}
+{% block style %}
+<link rel="stylesheet" href="{{url_for('static', filename='css/style.css')}}">
+<link rel="stylesheet" href="{{url_for('static', filename='css/reset.css')}}">
+{% endblock%}
 
-    {% extends 'base.html' %}
-    {% block title%} პროფილის გვერდი {% endblock %}
-    {% block style %}
-    <link rel="stylesheet" href="{{url_for('static', filename='css/style.css')}}">
-    <link rel="stylesheet" href="{{url_for('static', filename='css/reset.css')}}">
-    {% endblock%}
+{% block profielcolor %} #0094FF {% endblock %}
+{% block homeprofile %}
+<div class="dot"></div>{% endblock %}
+{% block content %}
 
-    {% block profielcolor %} #0094FF {% endblock %}
-    {% block homeprofile %} <div class="dot"></div>{% endblock %}
-    {% block content %}
+<section class="main_content">
+    <div class="profile_background">
+        <img src="/profile/image/{{user_id}}" alt="" class="profile_photo">
 
-    <section class="main_content">
-        <div class="profile_background">
-            <img src="/profile/image/{{user_id}}" alt="" class="profile_photo">
+    </div>
+    <h1 class="profile_nam_surname">{{user_name}}</h1>
+    {% for each in profile_post %}
+    <a class="topic_a" href="/open/{{each[0]}}">
+        <div class="profile_topic">
 
-        </div>
-            <h1 class="profile_nam_surname">{{user_name}}</h1>
-        {% for each in profile_post %}
-        <a class="topic_a" href="/open/{{each[0]}}" >
-            <div class="profile_topic">
-
-                <img class="topic_image" src="/category/image/{{each[0]}}" alt="" >
-                <div>
-                    <h1 class="topic_title" >{{each[2]}}</h1>
-                </div>
-                <div class="profile_category_and_time">
-                    <h1 class="profile-topic_category" >
-                        {{each[3]}}
-                    </h1>
-                    <br>
-                    <h1 class="profile-topic_time" >
-                        {{each[4]}}
-                    </h1>
-
-
-                </div>
+            <img class="topic_image" src="/category/image/{{each[0]}}" alt="">
+            <div>
+                <h1 class="topic_title">{{each[2]}}</h1>
+            </div>
+            <div class="profile_category_and_time">
+                <h1 class="profile-topic_category">
+                    {{each[3]}}
+                </h1>
+                <br>
+                <h1 class="profile-topic_time">
+                    {{each[4]}}
+                </h1>
 
 
             </div>
 
-        </a>
-        {% endfor %}
 
-    </section>
-    {% endblock%}
+        </div>
+
+    </a>
+    {% endfor %}
+
+    <form method="get" class="more_div">
+        <button class="more add_topic_button" type="submit" name="post_sort" value="{{post_count}}">{{profile_posts}}</button>
+    </form>
+
+</section>
+{% endblock%}

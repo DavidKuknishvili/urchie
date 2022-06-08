@@ -61,11 +61,14 @@
 
             <textarea name="comment" id="text-input" contenteditable="true"></textarea>
             <div class="open_send_div">
-                    <button class="open_send_rcheva" type="submit"> რჩევის დამატება </button>
+                {% with message = get_flashed_messages(with_categories=true) %}
+                        {% for category, msg in message %}
+                            <p class="{{category}}">{{ msg }}</p>
+                        {% endfor %}
+                {% endwith %}
+
+                <button class="open_send_rcheva" type="submit"> რჩევის დამატება </button>
             </div>
-            
-
-
         </form>
     {% for each in comments %}
         <div class="open_rchva">

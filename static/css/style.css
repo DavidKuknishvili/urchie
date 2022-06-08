@@ -1029,7 +1029,10 @@ input[type="color"]::-moz-color-swatch {
 }
 .open_send_div{
     padding: 25px;
-
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
 }
 
 .open_rchva{
@@ -1364,5 +1367,10 @@ input[type="color"]::-moz-color-swatch {
     margin-left: auto;
     align-items: center;
 }
-
+.more_div{
+    margin-top: 10px;
+    display: flex;
+    text-align: center;
+    justify-content: center;
+}
 

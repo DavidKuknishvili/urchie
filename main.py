@@ -72,25 +72,21 @@ def publishing_date(date):
 
     # post_date = str(datetime.now().year - datetime.strptime(date, '%Y-%m-%d %H:%M:%S.%f').year) + 'წლის'
 
-    if post_date_min != 0 and post_date_hour == 0:
+    if post_date_year != 0:
         post_date = str(
-            abs(datetime.now().minute - datetime.strptime(date, '%Y-%m-%d %H:%M:%S.%f').minute)) + ' წუთის წინ'
-
-    elif post_date_hour != 0 and post_date_day == 0:
-        post_date = str(
-            abs(datetime.now().hour - datetime.strptime(date, '%Y-%m-%d %H:%M:%S.%f').hour)) + ' საათის წინ'
-
-    elif post_date_day != 0 and post_date_month == 0:
-        post_date = str(
-            abs(datetime.now().day - datetime.strptime(date, '%Y-%m-%d %H:%M:%S.%f').day)) + ' დღის წინ'
-
+            abs(datetime.now().year - datetime.strptime(date, '%Y-%m-%d %H:%M:%S.%f').year)) + ' წელის წინ '
     elif post_date_month != 0 and post_date_year == 0:
         post_date = str(
             abs(datetime.now().month - datetime.strptime(date, '%Y-%m-%d %H:%M:%S.%f').month)) + ' თვის წინ'
-
-    elif post_date_year != 0:
+    elif post_date_day != 0 and post_date_month == 0:
         post_date = str(
-            abs(datetime.now().year - datetime.strptime(date, '%Y-%m-%d %H:%M:%S.%f').year)) + ' წელის წინ '
+            abs(datetime.now().day - datetime.strptime(date, '%Y-%m-%d %H:%M:%S.%f').day)) + ' დღის წინ'
+    elif post_date_hour != 0 and post_date_day == 0:
+        post_date = str(
+            abs(datetime.now().hour - datetime.strptime(date, '%Y-%m-%d %H:%M:%S.%f').hour)) + ' საათის წინ'
+    elif post_date_min != 0 and post_date_hour == 0:
+        post_date = str(
+            abs(datetime.now().minute - datetime.strptime(date, '%Y-%m-%d %H:%M:%S.%f').minute)) + ' წუთის წინ'
     else:
         post_date = 'ახლახანს'
 
@@ -127,6 +123,7 @@ def set_post_data(category):
 
         info = (title, post_date, comment_count, image_url, post_id, author_id)
         post_list.append(info)
+    post_list.reverse()
 
     return post_list
 
@@ -187,6 +184,7 @@ def general_posts():
         upload_date = publishing_date(date)
         general_tuple = (id, author_id, title, category, upload_date)
         general_post_list.append(general_tuple)
+    general_post_list.reverse()
 
     return general_post_list
 
@@ -209,6 +207,9 @@ def profile_post(id):
         general_tuple = (id, author_id, title, category, upload_date)
         general_post_list.append(general_tuple)
 
+
+    general_post_list.reverse()
+
     return general_post_list
 
 
@@ -220,7 +221,7 @@ def home():
 
             if request.args.get('search') is not None:
                 search_sentence = request.args.get('search')
-                return redirect(url_for('search', keyword=[f'{search_sentence}']))
+                return redirect(url_for('search', keyword=f'{search_sentence}'))
 
             category_type = request.args.get('category')
             # post_info = Posts.query.filter_by(category=category).all()
@@ -268,7 +269,6 @@ def login():
             password = request.form['password_login']
             users = Users.query.filter_by(e_mail=e_mail).all()
 
-
             if users == []:
                 return render_template('login.html', mail_error='error')
             else:
@@ -281,7 +281,6 @@ def login():
                     else:
                         session['user'] = e_mail
                         return redirect(url_for('home'))
-
 
     return render_template('login.html')
 
@@ -302,27 +301,23 @@ def registration():
             return render_template('registration.html', mail_error='register_error')
         elif password != again_password or len(password) < 8:
             return render_template('registration.html', password_error='register_error')
-        elif first_name == ""  :
+        elif first_name == "":
 
             return render_template('registration.html', firstname_error='register_error')
-        elif last_name == '' :
+        elif last_name == '':
             return render_template('registration.html', lastname_error='register_error')
 
         elif len(age) == 0:
             return render_template('registration.html', age_error='register_error')
 
         elif user_image.filename == '':
-            return render_template('registration.html', image_error = 'img_error')
+            return render_template('registration.html', image_error='img_error')
         else:
-
 
             user = Users(first_name=first_name, last_name=last_name, age=age, e_mail=e_mail, password=password,
                          user_image=user_image.read())
             db.session.add(user)
             db.session.commit()
-
-
-
 
             session['user'] = e_mail
             return redirect(url_for('home'))
@@ -338,7 +333,7 @@ def open(id):
 
         if request.args.get('search') is not None:
             search_sentence = request.args.get('search')
-            return redirect(url_for('search', keyword=[f'{search_sentence}']))
+            return redirect(url_for('search', keyword=f'{search_sentence}'))
 
         post_obj = Posts.query.filter_by(id=id).all()
         comment_obj = Comments.query.filter_by(post_id=id).all()
@@ -360,10 +355,13 @@ def open(id):
             comment = request.form['comment']
             # print(comment)
 
-            Comments_obj = Comments(comment=comment, comment_author_id=user_id, post_id=id)
-            db.session.add(Comments_obj)
-            db.session.commit()
-            return redirect(url_for('open', id=id))
+            if comment != '':
+                Comments_obj = Comments(comment=comment, comment_author_id=user_id, post_id=id)
+                db.session.add(Comments_obj)
+                db.session.commit()
+                return redirect(url_for('open', id=id))
+            else:
+                flash("*რჩევის ველი ცარიელია", "error")
 
         for each_comment in comment_obj:
             comment = str(each_comment).split('%$')[1]
@@ -391,7 +389,7 @@ def profile():
 
         if request.args.get('search') is not None:
             search_sentence = request.args.get('search')
-            return redirect(url_for('search', keyword=[f'{search_sentence}']))
+            return redirect(url_for('search', keyword=f'{search_sentence}'))
 
         user_mail = str(session['user'])
 
@@ -404,7 +402,19 @@ def profile():
 
         user_name = first_name + " " + last_name
 
-        return render_template('profile.html', user_name=user_name, user_id=user_id, profile_post=profile_post(user_id))
+        posts = profile_post(user_id)[:3]
+        posts_count = "all_post"
+        posts_value = "მეტი პოსტის ჩვენება"
+
+        if request.args.get('post_sort') == 'all_post':
+
+            posts = profile_post(user_id)
+            posts_count = "less_post"
+            posts_value = "ნაკლები პოსტის ჩვენება"
+        else:
+            posts = profile_post(user_id)[:3]
+
+        return render_template('profile.html', user_name=user_name, user_id=user_id, profile_post=posts, post_count=posts_count, profile_posts=posts_value)
 
     else:
         return redirect(url_for('home'))
@@ -429,7 +439,7 @@ def add():
     if 'user' in session:
         if request.args.get('search') is not None:
             search_sentence = request.args.get('search')
-            return redirect(url_for('search', keyword=[f'{search_sentence}']))
+            return redirect(url_for('search', keyword=f'{search_sentence}'))
 
         if request.method == 'POST':
             title = request.form['add_title']
@@ -438,7 +448,7 @@ def add():
             post_image = request.files['add_image']
             today_date = datetime.now()
 
-            if title == '' or description == '' or category == '' or post_image.filename == '' :
+            if title == '' or description == '' or category == '' or post_image.filename == '':
                 flash('*ყველა ველის შევსება აუცილებელია', 'error')
             else:
 
@@ -449,7 +459,8 @@ def add():
                 cursor.execute(f"SELECT id FROM users where e_mail='{author}'")
                 author_id = cursor.fetchone()[0]
 
-                post = Posts(author=author, title=title, description=description, category=category, upload_date=today_date,
+                post = Posts(author=author, title=title, description=description, category=category,
+                             upload_date=today_date,
                              post_image=post_image.read(), author_id=author_id)
                 db.session.add(post)
                 db.session.commit()
@@ -483,7 +494,7 @@ def search(keyword):
         if request.method == 'GET':
             if request.args.get('search') is not None:
                 search_sentence = request.args.get('search')
-                return redirect(url_for('search', keyword=[f'{search_sentence}']))
+                return redirect(url_for('search', keyword=f'{search_sentence}'))
 
             con = sqlite3.connect('urchie.sqlite3')
             cursor = con.cursor()
@@ -517,7 +528,7 @@ def profile_guest(id):
 
         if request.args.get('search') is not None:
             search_sentence = request.args.get('search')
-            return redirect(url_for('search', keyword=[f'{search_sentence}']))
+            return redirect(url_for('search', keyword=f'{search_sentence}'))
 
         user_info = Users.query.filter_by(id=id).all()
 
