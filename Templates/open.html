@@ -22,8 +22,22 @@
 
         <div class="open_topic">
 
-            <div class="open_topic_main_content" >
-                <img class="open_topic_image" src="/category/image/{{id}}" alt="">
+            <div class="open_topic_main_content">
+
+
+                <div class="open_image_div">
+                    <img class="open_topic_image" src="/category/image/{{id}}" alt="">
+                </div>
+                <form method="get" class="open_save_div">
+                    <button class="open_save_bn" type="submit" name="save" value="save">
+                        <svg  class="open_save" width="40" height="40" viewBox="0 0 49 49" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path  class="open_save" d="M30.6122 4.55566C36.0322 4.55566 40.4122 6.69566 40.4722 12.1357V42.4957C40.4722 42.8357 40.3922 43.1757 40.2322 43.4757C39.9722 43.9557 39.5322 44.3157 38.9922 44.4757C38.4722 44.6357 37.8922 44.5557 37.4122 44.2757L24.4522 37.7957L11.4722 44.2757C11.1742 44.4337 10.8322 44.5357 10.4922 44.5357C9.37217 44.5357 8.47217 43.6157 8.47217 42.4957V12.1357C8.47217 6.69566 12.8722 4.55566 18.2722 4.55566H30.6122ZM31.9722 16.6357H16.9122C16.0522 16.6357 15.3522 17.3357 15.3522 18.2157C15.3522 19.0937 16.0522 19.7957 16.9122 19.7957H31.9722C32.8322 19.7957 33.5322 19.0937 33.5322 18.2157C33.5322 17.3357 32.8322 16.6357 31.9722 16.6357Z" fill="white"/>
+                    </svg>
+                    </button>
+
+
+                </form>
+
 
                 <p class="open_topic_title">{{title}}</p>
 

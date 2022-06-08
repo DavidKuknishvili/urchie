@@ -882,18 +882,42 @@ figcaption{
 
     align-items: center;
     display: flex;
+
+}
+.open_image_div{
+    width: 100%;
+    display: flex;
     justify-content: center;
+    justify-items: center;
+
+}
+.open_save{
+    cursor: pointer;
+}
+.open_save_bn{
+    background: none;
+}
+.open_save:hover{
+    fill: #0094FF;
+    transition: 700ms;
+}
+.open_save_div{
+    position: absolute;
+    display: flex;
+    height: 308px;
+    margin-left: 51px;
+    margin-top: 53px;
 }
 .open_topic_image{
     margin-top: 25px;
     height: 308px;
     width: 95%;
     border-radius: 40px;
-    position: relative;
+
     object-position: center;
     object-fit: cover;
     filter: brightness(0.5);
-    display: grid;
+
 
 }
 .open_topic_title{
