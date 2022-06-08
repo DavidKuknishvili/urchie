@@ -510,16 +510,14 @@ def search(keyword):
 
     return redirect(url_for('home'))
 
+
 @app.route('/profilePage/<int:id>')
 def profile_guest(id):
-
     if 'user' in session:
 
         if request.args.get('search') is not None:
             search_sentence = request.args.get('search')
             return redirect(url_for('search', keyword=[f'{search_sentence}']))
-
-
 
         user_info = Users.query.filter_by(id=id).all()
 
@@ -534,8 +532,6 @@ def profile_guest(id):
 
     else:
         return redirect(url_for('home'))
-
-
 
 
 if __name__ == '__main__':

@@ -4,6 +4,7 @@ from io import BytesIO
 from flask import send_file
 import sqlite3
 
+password = 65446
 # con = sqlite3.connect('urchie.sqlite3')
 # cursor = con.cursor()
 #
@@ -34,5 +35,14 @@ import sqlite3
 # print('Sorted list:', ranikaaaaa sad xarndom)
 #
 
+
+pass_check = 0
+
+while pass_check != 999999:
+    print("searching pass...")
+    pass_check += 1
+    if pass_check == password:
+        print(f"password found -- {pass_check}")
+        break
 # import time
 # x = time.
