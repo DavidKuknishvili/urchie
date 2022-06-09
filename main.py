@@ -12,6 +12,10 @@ from flask import Flask, redirect, url_for, render_template, request, session, f
 from io import BytesIO
 from flask import send_file
 
+# password hash
+from passlib.hash import sha256_crypt
+
+
 app = Flask(__name__)
 
 app.config['SECRET_KEY'] = 'URCHIE_KEY'
@@ -257,6 +261,19 @@ def favorite_posts(user_id):
     return favorite_post_list
 
 
+
+def hash_password(password):
+    return sha256_crypt.hash(password)
+
+
+def verify_password(password, password_hash):
+    return sha256_crypt.verify(password, password_hash)
+
+
+
+
+
+
 @app.route('/', methods=['GET', 'POST'])
 def home():
     if 'user' in session:
@@ -273,23 +290,23 @@ def home():
             # print(category_type)
 
             if category_type == 'გართობა':
-                return render_template('category.html', info=set_post_data(category_type))
+                return render_template('category.html', info=set_post_data(category_type), fun_color='category_bn' )
             elif category_type == 'პროგრამირება':
-                return render_template('category.html', info=set_post_data(category_type))
+                return render_template('category.html', info=set_post_data(category_type), prog_color='category_bn')
             elif category_type == 'მუსიკა':
-                return render_template('category.html', info=set_post_data(category_type))
+                return render_template('category.html', info=set_post_data(category_type), mus_color='category_bn')
             elif category_type == 'ურთიერთობები':
-                return render_template('category.html', info=set_post_data(category_type))
+                return render_template('category.html', info=set_post_data(category_type), rel_color='category_bn')
             elif category_type == 'კულინარია':
-                return render_template('category.html', info=set_post_data(category_type))
+                return render_template('category.html', info=set_post_data(category_type), cul_color='category_bn')
             elif category_type == 'სპორტი':
-                return render_template('category.html', info=set_post_data(category_type))
+                return render_template('category.html', info=set_post_data(category_type), sport_color='category_bn')
             elif category_type == 'ხელოვნება':
-                return render_template('category.html', info=set_post_data(category_type))
+                return render_template('category.html', info=set_post_data(category_type), art_color='category_bn')
             elif category_type == 'მეცნიერება':
-                return render_template('category.html', info=set_post_data(category_type))
+                return render_template('category.html', info=set_post_data(category_type), science_color='category_bn')
             elif category_type == 'პოლიტიკა':
-                return render_template('category.html', info=set_post_data(category_type))
+                return render_template('category.html', info=set_post_data(category_type), pol_color='category_bn')
             elif category_type == 'ზოგადი':
                 return redirect(url_for('home'))
 
@@ -311,20 +328,21 @@ def login():
         if request.method == 'POST':
             e_mail = request.form['email_login']
             password = request.form['password_login']
-            users = Users.query.filter_by(e_mail=e_mail).all()
+            users = Users.query.filter_by(e_mail=e_mail).first()
 
-            if users == []:
+            if not users:
+                print(users.e_mail,users.password )
                 return render_template('login.html', mail_error='error')
             else:
 
-                for each in users:
-                    if e_mail == str(each).split(',')[4] and password != str(each).split(',')[5]:
+                print(users.e_mail, users.password)
+                if e_mail == users.e_mail and verify_password(password, users.password):
 
-                        return render_template('login.html', password_error='error')
+                    return render_template('login.html', password_error='error')
 
-                    else:
-                        session['user'] = e_mail
-                        return redirect(url_for('home'))
+                else:
+                    session['user'] = e_mail
+                    return redirect(url_for('home'))
 
     return render_template('login.html')
 
@@ -357,8 +375,8 @@ def registration():
         elif user_image.filename == '':
             return render_template('registration.html', image_error='img_error')
         else:
-
-            user = Users(first_name=first_name, last_name=last_name, age=age, e_mail=e_mail, password=password,
+            password_hash = hash_password(password)
+            user = Users(first_name=first_name, last_name=last_name, age=age, e_mail=e_mail, password=password_hash,
                          user_image=user_image.read())
             db.session.add(user)
             db.session.commit()
@@ -613,6 +631,11 @@ def profile_guest(id):
     else:
         return redirect(url_for('home'))
 
+
+
+@app.errorhandler(404)
+def not_found(e):
+    return render_template('404.html'), 404
 
 if __name__ == '__main__':
     app.run(debug=True)

@@ -20,20 +20,13 @@
     <section class="main_content">
 
 
- <form method="get" class="scroller">
-        <div class="scroller-item">
-            <a href="/categories/{{category}}">
-                <button  class="checkbox-tools" type="radio" name="category" id="tool-1" value="ზოგადი" checked ></button>
-                <label class="for-checkbox-tools" for="tool-1">
-                    ზოგადი
-                </label>
-            </a>
 
-        </div>
+ <form method="get" class="scroller">
+
             <div class="scroller-item">
 
                     <button class="checkbox-tools" type="radio" name="category"  value="გართობა"id="tool-2"></button>
-                    <label class="for-checkbox-tools" for="tool-2">
+                    <label class=" {{fun_color}} for-checkbox-tools" for="tool-2">
                     გართობა
                     </label>
 
@@ -41,8 +34,8 @@
             </div>
             <div class="scroller-item">
 
-                    <button class="checkbox-tools" type="radio" name="category" value="პროგრამირება" id="tool-3"></button>
-                    <label class="for-checkbox-tools" for="tool-3">
+                    <button class=" checkbox-tools" type="radio" name="category" value="პროგრამირება" id="tool-3"></button>
+                    <label class=" {{prog_color}} for-checkbox-tools" for="tool-3" >
                     პროგრამირება
                     </label>
 
@@ -51,7 +44,7 @@
             <div class="scroller-item">
 
                     <button class="checkbox-tools" type="radio" name="category" value="მუსიკა" id="tool-4"></button>
-                    <label class="for-checkbox-tools" for="tool-4">
+                    <label class="{{mus_color}} for-checkbox-tools" for="tool-4">
                     მუსიკა
                     </label>
 
@@ -59,7 +52,7 @@
             <div class="scroller-item">
 
                     <button class="checkbox-tools" type="radio" name="category" value="ურთიერთობები" id="tool-5"></button>
-                    <label class="for-checkbox-tools" for="tool-5">
+                    <label class="{{rel_color}} for-checkbox-tools" for="tool-5">
                         ურთიერთობები
                     </label>
 
@@ -67,7 +60,7 @@
             <div class="scroller-item">
 
                     <button class="checkbox-tools" type="radio" name="category" value="კულინარია" id="tool-6"></button>
-                    <label class="for-checkbox-tools" for="tool-6">
+                    <label class="{{cul_color}} for-checkbox-tools" for="tool-6">
                         კულინარია
                     </label>
 
@@ -76,7 +69,7 @@
             <div class="scroller-item">
 
                     <button class="checkbox-tools" type="radio" name="category" value="სპორტი" id="tool-7"></button>
-                    <label class="for-checkbox-tools" for="tool-7">
+                    <label class="{{sport_color}} for-checkbox-tools" for="tool-7">
                         სპორტი
                     </label>
 
@@ -85,7 +78,7 @@
             <div class="scroller-item">
 
                     <button class="checkbox-tools" type="radio" name="category" value="ხელოვნება" id="tool-8"></button>
-                    <label class="for-checkbox-tools" for="tool-8">
+                    <label class="{{art_color}} for-checkbox-tools" for="tool-8">
                         ხელოვნება
                     </label>
 
@@ -94,7 +87,7 @@
             <div class="scroller-item">
 
                     <button class="checkbox-tools" type="radio" name="category" value="მეცნიერება" id="tool-9"></button>
-                    <label class="for-checkbox-tools" for="tool-9">
+                    <label class="{{science_color}} for-checkbox-tools" for="tool-9">
                         მეცნიერება
                     </label>
 
@@ -103,7 +96,7 @@
             <div class="scroller-item">
 
                     <button class="checkbox-tools" type="radio" name="category" value="პოლიტიკა" id="tool-10"></button>
-                    <label class="for-checkbox-tools" for="tool-10">
+                    <label class="{{pol_color}} for-checkbox-tools" for="tool-10">
                         პოლიტიკა
                     </label>
 
@@ -113,6 +106,8 @@
 
 
           </form>
+
+
 
 
 
