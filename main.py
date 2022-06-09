@@ -49,6 +49,8 @@ class Posts(db.Model):
         return f"{self.id},{self.author},{self.title},{self.description},{self.category},{self.upload_date},{self.post_image},{self.author_id}"
 
 
+
+
 class Comments(db.Model):
     id = db.Column(db.Integer, primary_key=True, nullable=False)
     post_id = db.Column(db.Integer, nullable=False)
@@ -57,6 +59,16 @@ class Comments(db.Model):
 
     def __str__(self):
         return f"{self.post_id}%${self.comment}%${self.comment_author_id}"
+
+
+class Favorite(db.Model):
+    id = db.Column(db.Integer, primary_key=True, nullable=False)
+    post_id = db.Column(db.Integer, nullable=False)
+    user_id = db.Column(db.Integer, nullable=False)
+
+    def __str__(self):
+        return f"{self.id}%${self.post_id}%${self.user_id}"
+
 
 
 def publishing_date(date):
@@ -211,6 +223,38 @@ def profile_post(id):
     general_post_list.reverse()
 
     return general_post_list
+
+
+
+def favorite_posts(user_id):
+    con = sqlite3.connect('urchie.sqlite3')
+    cursor = con.cursor()
+
+    cursor.execute(f"SELECT post_id  FROM favorite WHERE user_id = {user_id}")
+    favorite_post = cursor.fetchall()
+
+    favorite_post_list = []
+    for i in favorite_post:
+        print(i)
+        cursor.execute(f"SELECT id, author_id, title, category, upload_date  FROM posts WHERE  id={i[0]}")
+        post = cursor.fetchall()
+
+        for each in post:
+            id = each[0]
+            author_id = each[1]
+            title = each[2]
+
+            date = each[4]
+            cursor.execute(f'select count(post_id) from comments where post_id = {id}')
+            comment_count = cursor.fetchone()[0]
+
+
+            general_tuple = (title, author_id, id, comment_count)
+            favorite_post_list.append(general_tuple)
+
+    # favorite_post_list.reverse()
+    print(favorite_post_list)
+    return favorite_post_list
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -371,8 +415,32 @@ def open(id):
 
         comment_list.reverse()
         # print(comment_list)
+
+        post = Favorite.query.filter_by(post_id=id, user_id=user_id).first()
+        if not post:
+            fill = "#ababab"
+
+        else:
+            fill = '#0094FF'
+
+        if request.args.get('save') == 'save':
+            post = Favorite.query.filter_by(post_id=id, user_id=user_id).first()
+            if not post:
+                fill = '#0094FF'
+                favorite_obj = Favorite(post_id=id, user_id=user_id)
+                db.session.add(favorite_obj)
+                db.session.commit()
+
+            else:
+                fill = "#ababab"
+                Favorite.query.filter_by(post_id=id, user_id=user_id).delete()
+                db.session.commit()
+            print(id)
+            return  redirect(url_for('open', id=id))
+
+
         return render_template('open.html', title=post_title, description=post_description, time=date,
-                               category=post_category, id=id, comments=comment_list)
+                               category=post_category, id=id, comments=comment_list, save_bn_color= fill)
 
     return redirect(url_for('home'))
 
@@ -414,7 +482,8 @@ def profile():
         else:
             posts = profile_post(user_id)[:3]
 
-        return render_template('profile.html', user_name=user_name, user_id=user_id, profile_post=posts, post_count=posts_count, profile_posts=posts_value)
+
+        return render_template('profile.html', user_name=user_name, user_id=user_id, profile_post=posts, post_count=posts_count, profile_posts=posts_value, favorite=favorite_posts(user_id))
 
     else:
         return redirect(url_for('home'))

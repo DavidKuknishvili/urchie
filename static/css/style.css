@@ -893,20 +893,28 @@ figcaption{
 }
 .open_save{
     cursor: pointer;
+
+    cursor: pointer;
 }
 .open_save_bn{
-    background: none;
+    height: 53px;
+    background-color: #fff;
+    width: 53px;
+    border-radius: 22px;
+    cursor: pointer;
 }
 .open_save:hover{
     fill: #0094FF;
-    transition: 700ms;
+    transition: 300ms;
 }
 .open_save_div{
+
     position: absolute;
     display: flex;
     height: 308px;
-    margin-left: 51px;
-    margin-top: 53px;
+    margin-left: 46px;
+    margin-top: 51px;
+
 }
 .open_topic_image{
     margin-top: 25px;
@@ -1174,6 +1182,7 @@ input[type="color"]::-moz-color-swatch {
     outline-color: #0094FF;
     height: fit-content;
     font-family: "BPG Nino Mtavruli", sans-serif;
+    resize: none;
 
 }
 
