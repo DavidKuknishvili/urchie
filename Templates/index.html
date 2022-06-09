@@ -107,11 +107,6 @@
 
           </form>
 
-
-
-
-
-
           
         <div class="category">
             <div class="col-12 pb-5">
@@ -130,7 +125,7 @@
 
                 <img class="first_topic_image" src="/category/image/{{last_post_id}}" alt="">
     
-                <p class="first_topic_title">{{title}}</p>
+                <p class="first_topic_title">{{ title |striptags|truncate(400) }}</p>
 
                 <div class="first_topic_time_category_div">
 
@@ -180,7 +175,7 @@
                             </div>
                         </div>
                         <div class="card_text">
-                            <p class="card-title"> {{each[0]}} </p>
+                            <p class="card-title">{{ each[0]|striptags|truncate(100) }}</p>
                         </div>
                         <div class="comment_count_div">
                             <p class="comment_count">
@@ -210,7 +205,7 @@
 
 
                     <div>
-                        <h1 class="topic_title" >{{each[2]}}</h1>
+                        <h1 class="topic_title" >{{ each[2]|striptags|truncate(200) }}</h1>
                     </div>
 
 

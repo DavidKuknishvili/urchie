@@ -1,4 +1,8 @@
 # db
+
+
+from werkzeug import exceptions
+
 from flask_sqlalchemy import SQLAlchemy
 import sqlite3
 
@@ -126,9 +130,6 @@ def set_post_data(category):
         author_id = each[4]
         cursor.execute(f'select count(post_id) from comments where post_id = {post_id}')
         comment_count = cursor.fetchone()[0]
-
-        if len(title) > 315:
-            title = title[:315] + '...'
 
         date = each[2]
         post_date = publishing_date(date)
@@ -633,7 +634,7 @@ def profile_guest(id):
 
 
 
-@app.errorhandler(404)
+@app.errorhandler(exceptions.NotFound)
 def not_found(e):
     return render_template('404.html'), 404
 

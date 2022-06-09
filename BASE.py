@@ -4,7 +4,7 @@ from io import BytesIO
 from flask import send_file
 import sqlite3
 
-password = 65446
+# password = 65446
 # con = sqlite3.connect('urchie.sqlite3')
 # cursor = con.cursor()
 #
@@ -36,13 +36,33 @@ password = 65446
 #
 
 
-pass_check = 0
+# pass_check = 0
+#
+# while pass_check != 999999:
+#     print("searching pass...")
+#     pass_check += 1
+#     if pass_check == password:
+#         print(f"password found -- {pass_check}")
+#         break
+# # import time
+# # x = time.
 
-while pass_check != 999999:
-    print("searching pass...")
-    pass_check += 1
-    if pass_check == password:
-        print(f"password found -- {pass_check}")
-        break
-# import time
-# x = time.
+
+
+# from passlib.hash import sha256_crypt
+#
+#
+# def hash_password(password):
+#     return sha256_crypt.hash(password)
+#
+#
+# def verify_password(password, password_hash):
+#     return sha256_crypt.verify(password, password_hash)
+#
+#
+# if e_mail == users.e_mail and verify_password(password, users.password):
+#     return render_template('login.html', password_error='error')
+
+
+
+
