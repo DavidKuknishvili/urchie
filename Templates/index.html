@@ -4,11 +4,7 @@
     {% block style %}
     <link rel="stylesheet" href="{{url_for('static', filename='css/style.css')}}">
     <link rel="stylesheet" href="{{url_for('static', filename='css/reset.css')}}">
-<!-- === -->
-    <link rel="stylesheet" href="https://unpkg.com/flickity@2/dist/flickity.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
-<!-- === -->
 
     <link rel="stylesheet" href="{{url_for('static', filename='css/category.css')}}">
 
@@ -24,9 +20,8 @@
     <section class="main_content">
 
 
-
-        <form method="get" class="main-carousel">
-        <div class="cell">
+ <form method="get" class="scroller">
+        <div class="scroller-item">
             <a href="/categories/{{category}}">
                 <button  class="checkbox-tools" type="radio" name="category" id="tool-1" value="ზოგადი" checked ></button>
                 <label class="for-checkbox-tools" for="tool-1">
@@ -35,7 +30,7 @@
             </a>
 
         </div>
-            <div class="cell">
+            <div class="scroller-item">
 
                     <button class="checkbox-tools" type="radio" name="category"  value="გართობა"id="tool-2"></button>
                     <label class="for-checkbox-tools" for="tool-2">
@@ -44,7 +39,7 @@
 
 
             </div>
-            <div class="cell">
+            <div class="scroller-item">
 
                     <button class="checkbox-tools" type="radio" name="category" value="პროგრამირება" id="tool-3"></button>
                     <label class="for-checkbox-tools" for="tool-3">
@@ -53,7 +48,7 @@
 
 
             </div>
-            <div class="cell">
+            <div class="scroller-item">
 
                     <button class="checkbox-tools" type="radio" name="category" value="მუსიკა" id="tool-4"></button>
                     <label class="for-checkbox-tools" for="tool-4">
@@ -61,7 +56,7 @@
                     </label>
 
             </div>
-            <div class="cell">
+            <div class="scroller-item">
 
                     <button class="checkbox-tools" type="radio" name="category" value="ურთიერთობები" id="tool-5"></button>
                     <label class="for-checkbox-tools" for="tool-5">
@@ -69,7 +64,7 @@
                     </label>
 
             </div>
-            <div class="cell">
+            <div class="scroller-item">
 
                     <button class="checkbox-tools" type="radio" name="category" value="კულინარია" id="tool-6"></button>
                     <label class="for-checkbox-tools" for="tool-6">
@@ -78,7 +73,7 @@
 
 
             </div>
-            <div class="cell">
+            <div class="scroller-item">
 
                     <button class="checkbox-tools" type="radio" name="category" value="სპორტი" id="tool-7"></button>
                     <label class="for-checkbox-tools" for="tool-7">
@@ -87,7 +82,7 @@
 
 
             </div>
-            <div class="cell">
+            <div class="scroller-item">
 
                     <button class="checkbox-tools" type="radio" name="category" value="ხელოვნება" id="tool-8"></button>
                     <label class="for-checkbox-tools" for="tool-8">
@@ -96,7 +91,7 @@
 
 
             </div>
-            <div class="cell">
+            <div class="scroller-item">
 
                     <button class="checkbox-tools" type="radio" name="category" value="მეცნიერება" id="tool-9"></button>
                     <label class="for-checkbox-tools" for="tool-9">
@@ -105,7 +100,7 @@
 
 
             </div>
-            <div class="cell">
+            <div class="scroller-item">
 
                     <button class="checkbox-tools" type="radio" name="category" value="პოლიტიკა" id="tool-10"></button>
                     <label class="for-checkbox-tools" for="tool-10">
@@ -118,7 +113,6 @@
 
 
           </form>
-
 
 
 
@@ -255,17 +249,31 @@
 
 
     {% block script %}
-        <script src="https://unpkg.com/flickity@2/dist/flickity.pkgd.min.js"></script>
+    <script>
+        const slider = document.querySelector('.scroller');
+        let mouseDown = false;
+        let startX, scrollLeft;
 
+        let startDragging = function (e) {
+          mouseDown = true;
+          startX = e.pageX - slider.offsetLeft;
+          scrollLeft = slider.scrollLeft;
+        };
+        let stopDragging = function (event) {
+          mouseDown = false;
+        };
 
-        <script>
+        slider.addEventListener('mousemove', (e) => {
+          e.preventDefault();
+          if(!mouseDown) { return; }
+          const x = e.pageX - slider.offsetLeft;
+          const scroll = x - startX;
+          slider.scrollLeft = scrollLeft - scroll;
+        });
 
-          $('.main-carousel').flickity({
-            // options
-
-            cellAlign: 'left',
-            wrapAround:false,
-            freeScroll: false
-            });
+        // Add the event listeners
+        slider.addEventListener('mousedown', startDragging, false);
+        slider.addEventListener('mouseup', stopDragging, false);
+        slider.addEventListener('mouseleave', stopDragging, false);
         </script>
     {% endblock %}

@@ -1215,6 +1215,31 @@ input[type="color"]::-moz-color-swatch {
 
 
 /*profile*/
+
+.scroller{
+    max-width: 10000px;
+    padding: 10px;
+    display: grid;
+    grid-auto-flow: column;
+    column-gap: 0rem;
+    overflow-x: scroll;
+}
+.scroller::-webkit-scrollbar{
+    display: none;
+}
+.scroller-item{
+    position: relative;
+    width: fit-content;
+    height: fit-content;
+
+}
+
+
+.profile_title_of_post{
+    margin-top: 60px;
+}
+
+
 .profile_background{
     background-color: #0079cf;
     width: 100%;
