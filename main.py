@@ -197,7 +197,7 @@ def general_posts():
         author_id = each[1]
         title = each[2]
         category = each[3]
-        date = each[4]
+        date = str(each[4])
         upload_date = publishing_date(date)
         general_tuple = (id, author_id, title, category, upload_date)
         general_post_list.append(general_tuple)
@@ -332,7 +332,7 @@ def login():
             users = Users.query.filter_by(e_mail=e_mail).first()
 
             if not users:
-                print(users.e_mail,users.password )
+
                 return render_template('login.html', mail_error='error')
             else:
 
