@@ -634,6 +634,10 @@ def profile_guest(id):
 
 
 
+@app.route('/settings/<int:id>')
+def settings(id):
+    return render_template('settings.html')
+
 @app.errorhandler(exceptions.NotFound)
 def not_found(e):
     return render_template('404.html'), 404
