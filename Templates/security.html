@@ -1,0 +1,22 @@
+
+{% extends 'settings.html'%}
+
+
+{% block content %}
+    <section class="setting_content_left_section">
+        <h3 class="pers_info_title">პაროლის შეცვლა</h3>
+        <div class="center_form form-group">
+          <div class="form-group">
+              <label for="firstName">ძველი პაროლი</label>
+              <input class="form-group_input" type="text" name="firstName" id="firstName"  placeholder="პაროლი">
+            </div>
+            <div class="form-group">
+              <label for="lastName">ახალი პაროლი</label>
+              <input class="form-group_input" type="text" name="lastName" id="lastName"  placeholder="პაროლი">
+            </div>
+
+        </div>
+
+        <button class="save" type="button" data->შენახვა</button>
+    </section>
+{% endblock %}

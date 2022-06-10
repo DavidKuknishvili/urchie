@@ -49,7 +49,6 @@ import sqlite3
 
 
 
-# from passlib.hash import sha256_crypt
 #
 #
 # def hash_password(password):

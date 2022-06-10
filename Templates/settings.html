@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+
+    <link rel="stylesheet" href="{{url_for('static', filename='css/settings_menu.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/reset.css')}}">
+</head>
+<body>
+
+    {% include 'settings_menu.html' %}
+
+    {% block content %}
+    {% endblock %}
+
+    {% block script %}
+    {% endblock %}
+</body>
+</html>

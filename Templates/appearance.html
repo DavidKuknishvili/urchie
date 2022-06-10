@@ -1,0 +1,112 @@
+    {% extends 'settings.html'%}
+
+{% block content %}
+
+        <section class="setting_content_left_section">
+        <div class="color_div">
+            <h1 class="color_title">
+                შეარჩიე სასურველი გარეკანის ფერი
+            </h1>
+            <ul class="color_ul">
+                <li class="color_li_1" value="0079cf"></li>
+                <li class="color_li_2" value="00cf8a"></li>
+                <li class="color_li_3" value="00cf0e"></li>
+                <li class="color_li_4" value="cfc500"></li>
+                <li class="color_li_5" value="cf0098"></li>
+                <li class="color_li_6" value="cf0026"></li>
+            </ul>
+        </div>
+        <h1 class="image_title">
+            შეარჩიე სასურველი პროფილის სურათი
+        </h1>
+        <div class="file_container">
+
+            <input type="file" id="file-input" accept="image/png, image/jpeg" onchange="preview()" multiple="">
+            <label class='file_label' for="file-input">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M19.41 7.41L14.58 2.58C14.21 2.21 13.7 2 13.17 2H6C4.9 2 4.01 2.9 4.01 4L4 20C4 21.1 4.89 22 5.99 22H18C19.1 22 20 21.1 20 20V8.83C20 8.3 19.79 7.79 19.41 7.41ZM14.8 15H13V18C13 18.55 12.55 19 12 19C11.45 19 11 18.55 11 18V15H9.21C8.76 15 8.54 14.46 8.86 14.15L11.66 11.36C11.86 11.17 12.17 11.17 12.37 11.36L15.16 14.15C15.46 14.46 15.24 15 14.8 15V15ZM14 9C13.45 9 13 8.55 13 8V3.5L18.5 9H14Z" fill="white"/>
+                </svg>
+                აირჩიე ფოტო
+            </label>
+            <p id="num-of-files">ფაილი არ არის დამატებული</p>
+            <div id="images"></div>
+          </div>
+            <button class="save" type="button" data->შენახვა</button>
+    </section>
+
+    {% endblock %}
+
+    {% block script %}
+    <script>
+
+
+
+    let fileInput = document.getElementById("file-input");
+    let imageContainer = document.getElementById("images");
+    let numOfFiles = document.getElementById("num-of-files");
+
+    function preview() {
+        imageContainer.innerHTML = "";
+        numOfFiles.textContent = `${fileInput.files.length} Files Selected`;
+
+        for (i of fileInput.files) {
+            let reader = new FileReader();
+            let figure = document.createElement("figure");
+            let figCap = document.createElement("figcaption");
+            figCap.innerText = i.name;
+            figure.appendChild(figCap);
+            reader.onload = () => {
+                let img = document.createElement("img");
+                img.setAttribute("src", reader.result);
+                figure.insertBefore(img, figCap);
+            }
+            imageContainer.appendChild(figure);
+            reader.readAsDataURL(i);
+        }
+    }
+
+    const multiStepForm = document.querySelector("[data-multi-step]")
+    const formSteps = [...multiStepForm.querySelectorAll("[data-step]")]
+    let currentStep = formSteps.findIndex(step => {
+        return step.classList.contains("active")
+    })
+
+    if (currentStep < 0) {
+        currentStep = 0
+        showCurrentStep()
+    }
+
+    multiStepForm.addEventListener("click", e => {
+        let incrementor
+        if (e.target.matches("[data-next]")) {
+            incrementor = 1
+        } else if (e.target.matches("[data-previous]")) {
+            incrementor = -1
+        }
+
+        if (incrementor == null) return
+
+        const inputs = [...formSteps[currentStep].querySelectorAll("input")]
+        const allValid = inputs.every(input => input.reportValidity())
+        if (allValid) {
+            currentStep += incrementor
+            showCurrentStep()
+        }
+    })
+
+    formSteps.forEach(step => {
+        step.addEventListener("animationend", e => {
+            formSteps[currentStep].classList.remove("hide")
+            e.target.classList.toggle("hide", !e.target.classList.contains("active"))
+        })
+    })
+
+    function showCurrentStep() {
+        formSteps.forEach((step, index) => {
+            step.classList.toggle("active", index === currentStep)
+        })
+    }
+
+
+</script>
+    {% endblock %}

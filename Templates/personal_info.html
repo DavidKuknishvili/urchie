@@ -1,0 +1,25 @@
+
+{% extends 'settings.html'%}
+
+{% block content %}
+<section class="setting_content_left_section">
+
+        <h3 class="pers_info_title">პირადი ინფორმაციის შეცვლა</h3>
+            <div class="center_form form-group">
+              <div class="form-group">
+                  <label for="firstName">სახელი</label>
+                  <input class="form-group_input" type="text" name="firstName" id="firstName"  placeholder="შეიყვანე სახელი">
+                </div>
+                <div class="form-group">
+                  <label for="lastName">გვარი</label>
+                  <input class="form-group_input" type="text" name="lastName" id="lastName"  placeholder="შეიყვანე გვარი">
+                </div>
+                <div class="form-group">
+                  <label for="age">ასაკი</label>
+                  <input class="form-group_input" type="number" name="age" id="age"  placeholder="შეიყვანე ასაკი">
+                </div>
+            </div>
+
+            <button class="save" type="button" data->შენახვა</button>
+    </section>
+{% endblock %}
