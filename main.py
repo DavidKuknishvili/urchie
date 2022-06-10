@@ -247,7 +247,7 @@ def favorite_posts(user_id):
     for i in favorite_post:
 
 
-        post = Posts.query.filter_by(id=i.id).all()
+        post = Posts.query.filter_by(id=i.post_id).all()
 
         comment_count = 0
 
