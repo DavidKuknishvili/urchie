@@ -634,93 +634,138 @@ def profile_guest(id):
 
 @app.route('/settings/<int:id>', methods=['GET','POST'])
 def settings(id):
-    info = Users.query.filter_by(id=id).first()
+    if 'user' in session:
+        email = str(session['user'])
+        if Users.query.filter_by(id=id).first().e_mail == email:
 
-    if request.args.get('menu') == 'personal-info':
-        if request.method == 'POST':
-            firstName = request.form['firstName']
-            lastName = request.form['lastName']
-            user_age = request.form['age']
+            info = Users.query.filter_by(id=id).first()
 
-            if firstName == '' and lastName == '':
+            if request.args.get('menu') == 'personal-info':
+                if request.method == 'POST':
+                    firstName = request.form['firstName']
+                    lastName = request.form['lastName']
+                    user_age = request.form['age']
 
-                info.age = user_age
-                db.session.commit()
-                flash('*ონაცემები შენახულია', 'info')
-            elif lastName == '' and len(str(user_age)) == 0:
+                    if firstName == '' and lastName == '':
 
-                info.first_name = firstName
+                        info.age = user_age
+                        db.session.commit()
+                        flash('*ონაცემები შენახულია', 'info')
+                    elif lastName == '' and len(str(user_age)) == 0:
 
-                db.session.commit()
-                flash('*მონაცემები შენახულია', 'info')
-            elif len(str(user_age)) == 0 or firstName == '':
+                        info.first_name = firstName
 
-                info.last_name = lastName
-                db.session.commit()
-                flash('*მონაცემები შენახულია', 'info')
+                        db.session.commit()
+                        flash('*მონაცემები შენახულია', 'info')
+                    elif len(str(user_age)) == 0 or firstName == '':
 
-            elif lastName == '':
-                info.first_name = firstName
-                info.age = user_age
-                db.session.commit()
+                        info.last_name = lastName
+                        db.session.commit()
+                        flash('*მონაცემები შენახულია', 'info')
 
-                flash('*მონაცემები შენახულია', 'info')
-            elif firstName == '':
-                info.last_name = lastName
-                info.age = user_age
-                db.session.commit()
+                    elif lastName == '':
+                        info.first_name = firstName
+                        info.age = user_age
+                        db.session.commit()
 
-                flash('*მონაცემები შენახულია', 'info')
-            elif len(str(user_age)) == 0:
-                info.last_name = lastName
-                info.first_name = firstName
-                db.session.commit()
+                        flash('*მონაცემები შენახულია', 'info')
+                    elif firstName == '':
+                        info.last_name = lastName
+                        info.age = user_age
+                        db.session.commit()
 
-                flash('*მონაცემები შენახულია', 'info')
-            else:
-                info.first_name = firstName
-                info.last_name = lastName
-                info.age = user_age
-                db.session.commit()
+                        flash('*მონაცემები შენახულია', 'info')
+                    elif len(str(user_age)) == 0:
+                        info.last_name = lastName
+                        info.first_name = firstName
+                        db.session.commit()
 
-                flash('*მონაცემები შენახულია', 'info')
+                        flash('*მონაცემები შენახულია', 'info')
+                    else:
+                        info.first_name = firstName
+                        info.last_name = lastName
+                        info.age = user_age
+                        db.session.commit()
 
-        return render_template('personal_info.html')
-    elif request.args.get('menu') == 'security':
+                        flash('*მონაცემები შენახულია', 'info')
 
-        if request.method == 'POST':
-            old_pass = request.form['oldPass']
-            new_pass = request.form['newPass']
-            confirm_pass = request.form['confirmPass']
+                return render_template('personal_info.html')
+            elif request.args.get('menu') == 'security':
 
-            if not sha256_crypt.verify(old_pass, info.password):
-                print(old_pass, info.password)
-                flash('*ძველი პაროლი არ არის სწორე', 'error')
-            elif new_pass != confirm_pass:
-                flash('*ახალი პაროლები არ ემთხვევა ერთმანეთს', 'error')
-            elif new_pass == old_pass:
-                flash('*ახალი და ძველი პაროლები ემთხვევა ერთმანეთს', 'error')
-            else:
-                info.password = hash_password(new_pass)
-                db.session.commit()
-                flash('*მონაცემები წარმატებით შეიცვალა', 'info')
+                if request.method == 'POST':
+                    old_pass = request.form['oldPass']
+                    new_pass = request.form['newPass']
+                    confirm_pass = request.form['confirmPass']
 
-        return render_template('security.html')
-    elif request.args.get('menu') == 'appearance':
-        if request.method == 'POST':
-            new_profile_pic = request.files['save_img']
+                    if not sha256_crypt.verify(old_pass, info.password):
+                        print(old_pass, info.password)
+                        flash('*ძველი პაროლი არ არის სწორე', 'error')
+                    elif new_pass != confirm_pass:
+                        flash('*ახალი პაროლები არ ემთხვევა ერთმანეთს', 'error')
+                    elif new_pass == old_pass:
+                        flash('*ახალი და ძველი პაროლები ემთხვევა ერთმანეთს', 'error')
+                    else:
+                        info.password = hash_password(new_pass)
+                        db.session.commit()
+                        flash('*მონაცემები წარმატებით შეიცვალა', 'info')
 
-            if new_profile_pic.filename == '':
-                flash("ფოტო არ არის არჩეული", 'error')
-            else:
-                info.user_image = new_profile_pic.read()
-                db.session.commit()
-                flash("პროფილის ფოტო წარმატებით შეიცვალა", 'info')
+                return render_template('security.html')
+            elif request.args.get('menu') == 'appearance':
+                if request.method == 'POST':
+                    new_profile_pic = request.files['save_img']
 
-    elif request.args.get('menu') == 'home':
+                    if new_profile_pic.filename == '':
+                        flash("ფოტო არ არის არჩეული", 'error')
+                    else:
+                        info.user_image = new_profile_pic.read()
+                        db.session.commit()
+                        flash("პროფილის ფოტო წარმატებით შეიცვალა", 'info')
+
+            elif request.args.get('menu') == 'home':
+                return redirect(url_for('home'))
+
+            return render_template('appearance.html')
+        else:
+            return redirect(url_for('home'))
+    else:
         return redirect(url_for('home'))
 
-    return render_template('appearance.html')
+@app.route('/otherProfile/<int:id>')
+def otherProfile(id):
+    if 'user' in session:
+
+        if request.args.get('search') is not None:
+            search_sentence = request.args.get('search')
+            return redirect(url_for('search', keyword=f'{search_sentence}'))
+
+
+
+        user_info = Users.query.filter_by(id=id).all()
+
+        for each in user_info:
+            first_name = each.first_name
+            last_name = each.last_name
+            user_id = each.id
+
+        user_name = first_name + " " + last_name
+
+        posts = profile_post(user_id)[:3]
+        posts_count = "all_post"
+        posts_value = "მეტი პოსტის ჩვენება"
+
+        if request.args.get('post_sort') == 'all_post':
+
+            posts = profile_post(user_id)
+            posts_count = "less_post"
+            posts_value = "ნაკლები პოსტის ჩვენება"
+        else:
+            posts = profile_post(user_id)[:3]
+
+
+        return render_template('other_profile.html', user_name=user_name, user_id=user_id, profile_post=posts, post_count=posts_count, profile_posts=posts_value)
+
+    else:
+        return redirect(url_for('home'))
 
 
 @app.errorhandler(exceptions.NotFound)
