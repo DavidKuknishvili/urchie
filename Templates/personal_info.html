@@ -2,7 +2,8 @@
 {% extends 'settings.html'%}
 
 {% block content %}
-<form method="post" class="setting_content_left_section">
+<section class="setting_content_left_section">
+
         <h3 class="pers_info_title">პირადი ინფორმაციის შეცვლა</h3>
             <div class="center_form form-group">
               <div class="form-group">
@@ -18,11 +19,7 @@
                   <input class="form-group_input" type="number" name="age" id="age"  placeholder="შეიყვანე ასაკი">
                 </div>
             </div>
-            {% with message = get_flashed_messages(with_categories=true) %}
-                {% for category, msg in message %}
-                    <p class="{{category}}">{{ msg }}</p>
-                {% endfor %}
-            {% endwith %}
-            <button class="save" type="submit">შენახვა</button>
-    </form>
+
+            <button class="save" type="button" data->შენახვა</button>
+    </section>
 {% endblock %}

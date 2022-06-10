@@ -4,7 +4,6 @@
 from werkzeug import exceptions
 
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import update
 import sqlite3
 
 # date
@@ -274,6 +273,8 @@ def verify_password(password, password_hash):
 
 
 
+
+
 @app.route('/', methods=['GET', 'POST'])
 def home():
     if 'user' in session:
@@ -336,7 +337,6 @@ def login():
             else:
 
                 print(users.e_mail, users.password)
-
                 if e_mail == users.e_mail and verify_password(password, users.password):
 
                     return render_template('login.html', password_error='error')
@@ -634,85 +634,9 @@ def profile_guest(id):
 
 
 
-@app.route('/settings/<int:id>', methods=['GET','POST'])
+@app.route('/settings/<int:id>')
 def settings(id):
-    info = Users.query.filter_by(id=id).first()
-
-    if request.args.get('menu') == 'personal-info':
-        if request.method == 'POST':
-            firstName = request.form['firstName']
-            lastName = request.form['lastName']
-            user_age = request.form['age']
-
-            if firstName == '' and lastName=='':
-
-                info.age = user_age
-                db.session.commit()
-                flash('*ონაცემები შენახულია', 'info')
-            elif lastName == '' and len(str(user_age)) == 0 :
-
-                info.first_name = firstName
-
-                db.session.commit()
-                flash('*მონაცემები შენახულია', 'info')
-            elif len(str(user_age)) == 0 or firstName == '':
-
-                info.last_name = lastName
-                db.session.commit()
-                flash('*მონაცემები შენახულია', 'info')
-
-            elif lastName == '':
-                info.first_name = firstName
-                info.age = user_age
-                db.session.commit()
-
-                flash('*მონაცემები შენახულია', 'info')
-            elif firstName == '':
-                info.last_name = lastName
-                info.age = user_age
-                db.session.commit()
-
-                flash('*მონაცემები შენახულია', 'info')
-            elif len(str(user_age)) == 0 :
-                info.last_name = lastName
-                info.first_name = firstName
-                db.session.commit()
-
-                flash('*მონაცემები შენახულია', 'info')
-            else:
-                info.first_name = firstName
-                info.last_name = lastName
-                info.age = user_age
-                db.session.commit()
-
-
-                flash('*მონაცემები შენახულია', 'info')
-
-
-        return render_template('personal_info.html')
-    elif request.args.get('menu') == 'security':
-
-        if request.method == 'POST':
-            old_pass = request.form['oldPass']
-            new_pass = request.form['newPass']
-            confirm_pass = request.form['confirmPass']
-
-            if not verify_password(old_pass,info.password):
-                flash('*ძველი პაროლი არ არის სწორე', 'error')
-            elif new_pass != confirm_pass:
-                flash('*ახალი პაროლები არ ემთხვევა ერთმანეთს', 'error')
-            elif new_pass == old_pass:
-                flash('*ახალი და ძველი პაროლები ემთხვევა ერთმანეთს', 'error')
-            else:
-                info.password = hash_password(new_pass)
-                db.session.commit()
-                flash('*მონაცემები წარმატებით შეიცვალა', 'info')
-
-
-        return render_template('security.html')
-
-
-    return render_template('appearance.html')
+    return render_template('settings.html')
 
 @app.errorhandler(exceptions.NotFound)
 def not_found(e):
