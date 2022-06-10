@@ -207,22 +207,22 @@ def general_posts():
 
 
 def profile_post(id):
-    con = sqlite3.connect('urchie.sqlite3')
-    cursor = con.cursor()
 
-    cursor.execute(f"SELECT id, author_id, title, category, upload_date  FROM posts WHERE author_id = '{id}'")
-    post = cursor.fetchall()
+
+    posts = Posts.query.filter_by(author_id=id).all()
+
     general_post_list = []
 
-    for each in post:
-        id = each[0]
-        author_id = each[1]
-        title = each[2]
-        category = each[3]
-        date = each[4]
+    for each in posts:
+        id = each.id
+        author_id = each.author_id
+        title = each.title
+        category = each.category
+        date = str(each.upload_date)
         upload_date = publishing_date(date)
         general_tuple = (id, author_id, title, category, upload_date)
         general_post_list.append(general_tuple)
+
 
 
     general_post_list.reverse()
@@ -405,14 +405,14 @@ def open(id):
         comment_list = []
 
         for each_post in post_obj:
-            post_title = str(each_post).split(',')[2]
-            post_description = str(each_post).split(',')[3]
-            post_category = str(each_post).split(',')[4]
-            post_upload_date = str(each_post).split(',')[5]
+            post_title = each_post.title
+            post_description = each_post.description
+            post_category = each_post.category
+            post_upload_date = str(each_post.upload_date)
             date = publishing_date(post_upload_date)
 
         for each_user in user_obj:
-            user_id = str(each_user).split(',')[0]
+            user_id = each_user.id
 
         if request.method == 'POST':
             comment = request.form['comment']
@@ -427,8 +427,8 @@ def open(id):
                 flash("*რჩევის ველი ცარიელია", "error")
 
         for each_comment in comment_obj:
-            comment = str(each_comment).split('%$')[1]
-            comment_author_id = str(each_comment).split('%$')[2]
+            comment = each_comment.comment
+            comment_author_id = each_comment.comment_author_id
             comment_tuple = (comment, comment_author_id)
             comment_list.append(comment_tuple)
 
@@ -483,9 +483,9 @@ def profile():
         user_info = Users.query.filter_by(e_mail=user_mail).all()
 
         for each in user_info:
-            first_name = str(each).split(',')[1]
-            last_name = str(each).split(',')[2]
-            user_id = str(each).split(',')[0]
+            first_name = each.first_name
+            last_name = each.last_name
+            user_id = each.id
 
         user_name = first_name + " " + last_name
 
@@ -621,9 +621,9 @@ def profile_guest(id):
         user_info = Users.query.filter_by(id=id).all()
 
         for each in user_info:
-            first_name = str(each).split(',')[1]
-            last_name = str(each).split(',')[2]
-            user_id = str(each).split(',')[0]
+            first_name = each.first_name
+            last_name = each.last_name
+            user_id = each.id
 
         user_name = first_name + " " + last_name
 
