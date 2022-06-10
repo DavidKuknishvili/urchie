@@ -112,27 +112,29 @@ def publishing_date(date):
 
 
 def set_post_data(category):
-    con = sqlite3.connect('urchie.sqlite3')
-    cursor = con.cursor()
-    cursor.execute(f"SELECT id, title,upload_date,category, author_id FROM posts where category='{category}'")
-    post_info = cursor.fetchall()
 
-    # print(post_info)
+
+    post_info = Posts.query.filter_by(category=category).all()
+
+
 
     post_list = []
 
     for each in post_info:
-        post_id = each[0]
+        post_id = each.id
 
-        title = each[1]
-        author_id = each[4]
-        cursor.execute(f'select count(post_id) from comments where post_id = {post_id}')
-        comment_count = cursor.fetchone()[0]
+        title = each.title
+        author_id = each.author_id
 
-        date = each[2]
+
+        comment_count=0
+        commnet_info = Comments.query.filter_by(post_id= post_id).all()
+        for i in commnet_info:
+            comment_count += 1
+
+        date = str(each.upload_date)
         post_date = publishing_date(date)
 
-        # post_date = f'{post_date_min} {post_date_hour} {post_date_day}, {post_date_month}, {post_date_year} '
 
         image_url = f'/category/image/{post_id}'
 
@@ -146,7 +148,7 @@ def set_post_data(category):
 def popular_posts():
     con = sqlite3.connect('urchie.sqlite3')
     cursor = con.cursor()
-    cursor.execute(f"SELECT title, author_id, id  FROM posts ")
+    cursor.execute("SELECT title, author_id, id  FROM posts ")
     post = cursor.fetchall()
 
     popular_posts_list = []
@@ -171,31 +173,36 @@ def popular_posts():
 
 
 def last_post():
-    con = sqlite3.connect('urchie.sqlite3')
-    cursor = con.cursor()
-    cursor.execute(f"SELECT id, title, category, upload_date  FROM posts ORDER BY id DESC")
-    post = cursor.fetchone()
 
-    return post
 
+    post_info = Posts.query.all()
+    ls = []
+    for each in post_info:
+        id=each.id
+        title=each.title
+        category=each.category
+        upload_date= str(each.upload_date)
+
+        tuplle = (id, title, category, upload_date)
+        ls.append(tuplle)
+
+    ls.reverse()
+    list_post = ls[0]
+
+    return list_post
 
 def general_posts():
-    con = sqlite3.connect('urchie.sqlite3')
-    cursor = con.cursor()
-    cursor.execute(
-        f"SELECT id, author_id, title, category, upload_date  FROM posts"
-        f" WHERE id != {last_post()[0]} and id != {popular_posts()[0][2]}  "
-        f"and id != {popular_posts()[1][2]} and id != {popular_posts()[2][2]} "
-        f"and id != {popular_posts()[3][2]}")
-    post = cursor.fetchall()
+
+
+    post_info = Posts.query.all()
 
     general_post_list = []
-    for each in post:
-        id = each[0]
-        author_id = each[1]
-        title = each[2]
-        category = each[3]
-        date = str(each[4])
+    for each in post_info:
+        id = each.id
+        author_id = each.author_id
+        title = each.title
+        category = each.category
+        date = str(each.upload_date)
         upload_date = publishing_date(date)
         general_tuple = (id, author_id, title, category, upload_date)
         general_post_list.append(general_tuple)
@@ -230,32 +237,36 @@ def profile_post(id):
 
 
 def favorite_posts(user_id):
-    con = sqlite3.connect('urchie.sqlite3')
-    cursor = con.cursor()
 
-    cursor.execute(f"SELECT post_id  FROM favorite WHERE user_id = {user_id}")
-    favorite_post = cursor.fetchall()
+
+    favorite_post = Favorite.query.filter_by(user_id=user_id).all()
+
 
     favorite_post_list = []
+
     for i in favorite_post:
-        print(i)
-        cursor.execute(f"SELECT id, author_id, title, category, upload_date  FROM posts WHERE  id={i[0]}")
-        post = cursor.fetchall()
+
+
+        post = Posts.query.filter_by(id=i.id).all()
+
+        comment_count = 0
 
         for each in post:
-            id = each[0]
-            author_id = each[1]
-            title = each[2]
+            id = each.id
+            author_id = each.author_id
+            title = each.title
+            # date = str(each.upload_date)
 
-            date = each[4]
-            cursor.execute(f'select count(post_id) from comments where post_id = {id}')
-            comment_count = cursor.fetchone()[0]
 
+            comment_info = Comments.query.filter_by(post_id=id).all()
+
+            for i in comment_info:
+                comment_count += 1
 
             general_tuple = (title, author_id, id, comment_count)
             favorite_post_list.append(general_tuple)
 
-    # favorite_post_list.reverse()
+    favorite_post_list.reverse()
     print(favorite_post_list)
     return favorite_post_list
 
@@ -509,16 +520,13 @@ def profile():
 @app.route('/profile/image/<int:id>')
 def set_image(id):
     if 'user' in session:
-        con = sqlite3.connect('urchie.sqlite3')
-        cursor = con.cursor()
-        cursor.execute(f"SELECT user_image FROM users where id={id}")
-        result = cursor.fetchone()
-        image_bytes = result[0]
+
+        user_info = Users.query.filter_by(id=id).first()
+        image_bytes = user_info.user_image
         bytes_io = BytesIO(image_bytes)
         return send_file(bytes_io, mimetype='image/jpeg')
     else:
         return redirect(url_for('home'))
-
 
 @app.route('/add', methods=['GET', 'POST'])
 def add():
@@ -540,10 +548,7 @@ def add():
 
                 author = str(session['user'])
 
-                con = sqlite3.connect('urchie.sqlite3')
-                cursor = con.cursor()
-                cursor.execute(f"SELECT id FROM users where e_mail='{author}'")
-                author_id = cursor.fetchone()[0]
+                author_id = Users.query.filter_by(e_mail=author).first().id
 
                 post = Posts(author=author, title=title, description=description, category=category,
                              upload_date=today_date,
@@ -557,16 +562,13 @@ def add():
     else:
         return redirect(url_for('home'))
 
-
 @app.route("/category/image/<int:id>")
 def category(id):
     if 'user' in session:
 
-        con = sqlite3.connect('urchie.sqlite3')
-        cursor = con.cursor()
-        cursor.execute(f"SELECT post_image FROM posts where id={id}")
-        result = cursor.fetchone()
-        image_bytes = result[0]
+
+        result = Posts.query.filter_by(id=id).first()
+        image_bytes = result.post_image
         bytes_io = BytesIO(image_bytes)
         return send_file(bytes_io, mimetype='image/jpeg')
     else:
@@ -582,20 +584,21 @@ def search(keyword):
                 search_sentence = request.args.get('search')
                 return redirect(url_for('search', keyword=f'{search_sentence}'))
 
-            con = sqlite3.connect('urchie.sqlite3')
-            cursor = con.cursor()
-            cursor.execute(
-                f"SELECT title,description,author_id,id FROM posts WHERE title LIKE '%{keyword}%' OR description LIKE '%{keyword}%'")
 
             search_data_list = []
-            search_data = cursor.fetchall()
+
+
+            search_data = Posts.query.filter(Posts.title.like(f"%{keyword}%")).all()
 
             for each in search_data:
-                title = each[0]
-                author_id = each[2]
-                id = each[3]
-                cursor.execute(f'select count(post_id) from comments where post_id = {id}')
-                comment_count = cursor.fetchone()[0]
+                title = each.title
+                author_id = each.author_id
+                id = each.id
+
+                comment_count = 0
+                commnet_info = Comments.query.filter_by(post_id=id).all()
+                for i in commnet_info:
+                    comment_count += 1
 
                 search_tuple = (title, author_id, id, comment_count)
 
@@ -606,6 +609,7 @@ def search(keyword):
         return render_template('search.html')
 
     return redirect(url_for('home'))
+
 
 
 @app.route('/profilePage/<int:id>')
