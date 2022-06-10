@@ -733,36 +733,40 @@ def settings(id):
 @app.route('/otherProfile/<int:id>')
 def otherProfile(id):
     if 'user' in session:
-
-        if request.args.get('search') is not None:
-            search_sentence = request.args.get('search')
-            return redirect(url_for('search', keyword=f'{search_sentence}'))
-
-
-
-        user_info = Users.query.filter_by(id=id).all()
-
-        for each in user_info:
-            first_name = each.first_name
-            last_name = each.last_name
-            user_id = each.id
-
-        user_name = first_name + " " + last_name
-
-        posts = profile_post(user_id)[:3]
-        posts_count = "all_post"
-        posts_value = "მეტი პოსტის ჩვენება"
-
-        if request.args.get('post_sort') == 'all_post':
-
-            posts = profile_post(user_id)
-            posts_count = "less_post"
-            posts_value = "ნაკლები პოსტის ჩვენება"
+        mail = str(session['user'])
+        info = Users.query.filter_by(e_mail=mail).first()
+        if info.id == id:
+            return redirect(url_for('profile'))
         else:
+            if request.args.get('search') is not None:
+                search_sentence = request.args.get('search')
+                return redirect(url_for('search', keyword=f'{search_sentence}'))
+
+
+
+            user_info = Users.query.filter_by(id=id).all()
+
+            for each in user_info:
+                first_name = each.first_name
+                last_name = each.last_name
+                user_id = each.id
+
+            user_name = first_name + " " + last_name
+
             posts = profile_post(user_id)[:3]
+            posts_count = "all_post"
+            posts_value = "მეტი პოსტის ჩვენება"
+
+            if request.args.get('post_sort') == 'all_post':
+
+                posts = profile_post(user_id)
+                posts_count = "less_post"
+                posts_value = "ნაკლები პოსტის ჩვენება"
+            else:
+                posts = profile_post(user_id)[:3]
 
 
-        return render_template('other_profile.html', user_name=user_name, user_id=user_id, profile_post=posts, post_count=posts_count, profile_posts=posts_value)
+            return render_template('other_profile.html', user_name=user_name, user_id=user_id, profile_post=posts, post_count=posts_count, profile_posts=posts_value)
 
     else:
         return redirect(url_for('home'))
