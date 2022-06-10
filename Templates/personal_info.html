@@ -2,8 +2,7 @@
 {% extends 'settings.html'%}
 
 {% block content %}
-<section class="setting_content_left_section">
-
+<form method="post" class="setting_content_left_section">
         <h3 class="pers_info_title">პირადი ინფორმაციის შეცვლა</h3>
             <div class="center_form form-group">
               <div class="form-group">
@@ -20,6 +19,6 @@
                 </div>
             </div>
 
-            <button class="save" type="button" data->შენახვა</button>
-    </section>
+            <button class="save" type="submit">შენახვა</button>
+    </form>
 {% endblock %}

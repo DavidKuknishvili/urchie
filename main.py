@@ -4,6 +4,7 @@
 from werkzeug import exceptions
 
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import update
 import sqlite3
 
 # date
@@ -273,8 +274,6 @@ def verify_password(password, password_hash):
 
 
 
-
-
 @app.route('/', methods=['GET', 'POST'])
 def home():
     if 'user' in session:
@@ -337,6 +336,7 @@ def login():
             else:
 
                 print(users.e_mail, users.password)
+
                 if e_mail == users.e_mail and verify_password(password, users.password):
 
                     return render_template('login.html', password_error='error')
@@ -634,9 +634,43 @@ def profile_guest(id):
 
 
 
-@app.route('/settings/<int:id>')
+@app.route('/settings/<int:id>', methods=['GET','POST'])
 def settings(id):
-    return render_template('settings.html')
+    info = Users.query.filter_by(id=id).first()
+
+    if request.args.get('menu') == 'personal-info':
+        if request.method == 'POST':
+            firstName = request.form['firstName']
+            lastName = request.form['lastName']
+            user_age = request.form['age']
+
+
+
+            info.first_name = firstName
+            info.last_name = lastName
+            info.age = user_age
+            db.session.commit()
+
+        return render_template('personal_info.html')
+    elif request.args.get('menu') == 'security':
+
+        if request.method == 'POST':
+            old_pass = request.form['oldPass']
+            new_pass = request.form['newPass']
+            confirm_pass = request.form['confirmPass']
+
+            if not verify_password(old_pass,info.password) or new_pass != confirm_pass or new_pass == old_pass:
+                print("shegeshala debilo")
+            else:
+                info.password = hash_password(new_pass)
+                db.session.commit()
+
+
+
+        return render_template('security.html')
+
+
+    return render_template('appearance.html')
 
 @app.errorhandler(exceptions.NotFound)
 def not_found(e):
