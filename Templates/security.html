@@ -3,20 +3,29 @@
 
 
 {% block content %}
-    <section class="setting_content_left_section">
+    <form method="post" class="setting_content_left_section">
         <h3 class="pers_info_title">პაროლის შეცვლა</h3>
         <div class="center_form form-group">
           <div class="form-group">
-              <label for="firstName">ძველი პაროლი</label>
-              <input class="form-group_input" type="text" name="firstName" id="firstName"  placeholder="პაროლი">
+              <label for="old">ძველი პაროლი</label>
+              <input class="form-group_input" type="password" name="oldPass" id="old"  placeholder="პაროლი">
             </div>
             <div class="form-group">
-              <label for="lastName">ახალი პაროლი</label>
-              <input class="form-group_input" type="text" name="lastName" id="lastName"  placeholder="პაროლი">
+              <label for="new">ახალი პაროლი</label>
+              <input class="form-group_input" type="password" name="newPass" id="new"  placeholder="პაროლი">
+            </div>
+            <div class="form-group">
+              <label for="conf">გაიმეორე პაროლი</label>
+              <input class="form-group_input" type="password" name="confirmPass" id="conf"  placeholder="პაროლი">
             </div>
 
         </div>
+            {% with message = get_flashed_messages(with_categories=true) %}
+                {% for category, msg in message %}
+                    <p class="{{category}}">{{ msg }}</p>
+                {% endfor %}
+            {% endwith %}
 
-        <button class="save" type="button" data->შენახვა</button>
-    </section>
+        <button class="save" type="submit" data->შენახვა</button>
+    </form>
 {% endblock %}

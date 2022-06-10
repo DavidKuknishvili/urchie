@@ -250,3 +250,15 @@ figcaption{
     border-radius: 20px;
     cursor: pointer;
 }
+.error{
+    font-family: "BPG Nino Mtavruli", sans-serif;
+    color: rgb(237,64,55);
+    font-weight: bold;
+    margin-left: 25px;
+}
+.info{
+    font-family: "BPG Nino Mtavruli", sans-serif;
+    color: rgb(55, 237, 119);
+    font-weight: bold;
+    margin-left: 25px;
+}
