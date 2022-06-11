@@ -12,7 +12,7 @@ URCHIE is a website for people who need advice. A user can add post or just sear
 - datetime
 - werkzeug
 
-# Author
+# Authors
 - [@DavidKuknishvili](https://github.com/DavidKuknishvili)
 - [@nnamoradze](https://github.com/nnamoradze)
 
