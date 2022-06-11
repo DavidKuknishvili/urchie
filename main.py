@@ -1,8 +1,8 @@
 # db
 from werkzeug import exceptions
-
-from flask_sqlalchemy import SQLAlchemy
 import sqlite3
+from flask_sqlalchemy import SQLAlchemy
+
 
 # date
 from datetime import datetime
@@ -342,13 +342,13 @@ def login():
 
             if not users:
 
-                return render_template('login.html', mail_error='error')
+                return render_template('login.html', mail_error='register_error')
             else:
 
                 print(users.e_mail, users.password)
-                if e_mail == users.e_mail and verify_password(password, users.password):
+                if not verify_password(password, users.password) and e_mail == users.e_mail:
 
-                    return render_template('login.html', password_error='error')
+                    return render_template('login.html', password_error='register_error')
 
                 else:
                     session['user'] = e_mail
