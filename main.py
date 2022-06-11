@@ -147,19 +147,20 @@ def set_post_data(category):
 
 
 def popular_posts():
-    con = sqlite3.connect('urchie.sqlite3')
-    cursor = con.cursor()
-    cursor.execute("SELECT title, author_id, id  FROM posts ")
-    post = cursor.fetchall()
+
+    post = Posts.query.all()
 
     popular_posts_list = []
 
     for each in post:
-        title = each[0]
-        author_id = each[1]
-        id = each[2]
-        cursor.execute(f'select count(post_id) from comments where post_id = {id}')
-        comment_count = cursor.fetchone()[0]
+        title = each.title
+        author_id = each.author_id
+        id = each.id
+        comment_count = 0
+        commnet_info = Comments.query.filter_by(post_id=id).all()
+
+        for i in commnet_info:
+            comment_count += 1
 
         post_tuple = (title, author_id, id, comment_count)
 
