@@ -1,6 +1,7 @@
-# db
+# errors
 from werkzeug import exceptions
-import sqlite3
+
+# db
 from flask_sqlalchemy import SQLAlchemy
 
 
