@@ -16,6 +16,8 @@ URCHIE is a website for people who need advice. A user can add post or just sear
 - [@DavidKuknishvili](https://github.com/DavidKuknishvili)
 - [@nnamoradze](https://github.com/nnamoradze)
 
+
+# Screens
 ![image](https://user-images.githubusercontent.com/92639690/173135396-a1892339-e2c8-48e0-b629-95875f10bfad.png)
 
 ![image](https://user-images.githubusercontent.com/92639690/173136236-a5ac1d77-da35-49ed-b694-45513705f060.png)
